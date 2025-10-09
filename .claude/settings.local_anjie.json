@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.jamesjean.com)",
+      "WebFetch(domain:www.kaikaikiki.com)",
+      "WebFetch(domain:audkawa.com)",
+      "WebFetch(domain:www.jr-art.net)",
+      "WebFetch(domain:www.taylorswift.com)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

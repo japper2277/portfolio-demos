@@ -4,7 +4,7 @@
 import { Carousel } from './carousel.js';
 import { Grid } from './grid.js';
 import { Lightbox } from './lightbox.js';
-import { Gallery } from './gallery.js';
+// import { Gallery } from './gallery.js'; // DISABLED: Missing CSS causing persistent bar bug
 import { Animations } from './animations.js';
 import { announceToScreenReader } from './utils.js';
 import { initAboutSection } from '../about-section.js';
@@ -66,8 +66,9 @@ class PortfolioApp {
         this.lightbox.init();
 
         // Initialize gallery command bar
-        this.gallery = new Gallery(this.portfolioData, this.lightbox);
-        this.gallery.init();
+        // DISABLED: Missing CSS causing persistent bar bug on all pages including Contact
+        // this.gallery = new Gallery(this.portfolioData, this.lightbox);
+        // this.gallery.init();
 
         // Initialize animations
         this.animations = new Animations();
@@ -109,14 +110,23 @@ class PortfolioApp {
     }
 
     setupMobileMenu() {
-        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        const navLinks = document.querySelector('.nav-links');
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        const mainNav = document.querySelector('.main-nav');
 
-        if (mobileMenuBtn && navLinks) {
-            mobileMenuBtn.addEventListener('click', () => {
-                const isExpanded = mobileMenuBtn.getAttribute('aria-expanded') === 'true';
-                mobileMenuBtn.setAttribute('aria-expanded', !isExpanded);
-                navLinks.classList.toggle('active');
+        if (mobileMenuToggle && mainNav) {
+            // Toggle menu on button click
+            mobileMenuToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isExpanded = mobileMenuToggle.getAttribute('aria-expanded') === 'true';
+                mobileMenuToggle.setAttribute('aria-expanded', !isExpanded);
+                mainNav.classList.toggle('active');
+
+                // Prevent body scroll when menu is open
+                if (!isExpanded) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
 
                 if (window.announceToScreenReader) {
                     window.announceToScreenReader(
@@ -126,18 +136,32 @@ class PortfolioApp {
             });
 
             // Close menu when clicking a link
-            navLinks.querySelectorAll('a').forEach(link => {
+            mainNav.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', () => {
-                    navLinks.classList.remove('active');
-                    mobileMenuBtn.setAttribute('aria-expanded', 'false');
+                    mainNav.classList.remove('active');
+                    mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
                 });
             });
 
             // Close menu when clicking outside
             document.addEventListener('click', (e) => {
-                if (!mobileMenuBtn.contains(e.target) && !navLinks.contains(e.target)) {
-                    navLinks.classList.remove('active');
-                    mobileMenuBtn.setAttribute('aria-expanded', 'false');
+                if (mainNav.classList.contains('active') &&
+                    !mobileMenuToggle.contains(e.target) &&
+                    !mainNav.contains(e.target)) {
+                    mainNav.classList.remove('active');
+                    mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
+                }
+            });
+
+            // Close menu on escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && mainNav.classList.contains('active')) {
+                    mainNav.classList.remove('active');
+                    mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
+                    mobileMenuToggle.focus();
                 }
             });
         }

@@ -226,6 +226,11 @@ export class Grid {
             return;
         }
 
+        // Kill any existing animations on the grid to prevent race conditions
+        if (typeof gsap !== 'undefined') {
+            gsap.killTweensOf(this.gridContainer.children);
+        }
+
         const oldItems = Array.from(this.gridContainer.children);
 
         if (oldItems.length === 0) {
@@ -279,13 +284,7 @@ export class Grid {
                         y: 0,
                         duration: 0.4,
                         stagger: 0.05,
-                        ease: 'power2.out',
-                        onComplete: () => {
-                            // Trigger scroll animations refresh
-                            if (window.AnimationController) {
-                                window.AnimationController.refreshAnimations();
-                            }
-                        }
+                        ease: 'power2.out'
                     }
                 );
 
