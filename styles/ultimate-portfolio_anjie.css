@@ -7,14 +7,14 @@
     --font-special: 'Special Elite', monospace;
 
     /* Core Color Palette */
-    --color-primary: #ffffff;
-    --color-secondary: #a0a0a0;
-    --color-background: #1a1a1a;
+    --color-primary: #000000;
+    --color-secondary: #333333;
+    --color-background: #fffafc;
 
     /* Interactive & Accent Colors - Semantic naming */
     --color-accent: #c2a385;           /* Gold - CTAs and primary actions only */
     --color-accent-hover: #d4b596;     /* Gold hover state */
-    --color-interactive: #ffffff;       /* White - for hover states on non-CTA elements */
+    --color-interactive: #000000;       /* Black - for hover states on non-CTA elements */
 
     /* Status Colors (muted, gallery-appropriate) */
     --color-available: #4a5f4a;        /* Muted forest green */
@@ -25,7 +25,7 @@
     --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);     /* General smooth transitions */
 
     /* Subtle custom cursor (dot) for interactive elements on desktop */
-    --cursor-dot: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="3" fill="white"/><circle cx="6" cy="6" r="5.5" fill="none" stroke="black" stroke-width="1"/></svg>') 6 6, pointer;
+    --cursor-dot: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="3" fill="black"/><circle cx="6" cy="6" r="5.5" fill="none" stroke="black" stroke-width="1"/></svg>') 6 6, pointer;
 
     /* Typographic Scale - Strict hierarchy for visual consistency */
     --text-xs: 0.75rem;      /* 12px - captions, fine print */
@@ -366,7 +366,7 @@ body::before {
 .artist-title {
     font-family: 'Roboto Mono', monospace;
     font-size: 0.75rem;
-    color: #a0a0a0;
+    color: #666666;
     letter-spacing: 0.1em;
     text-transform: uppercase;
 }
@@ -434,7 +434,7 @@ body::before {
 
 .main-nav a {
     font-family: 'Roboto Mono', monospace;
-    color: #a0a0a0;
+    color: #666666;
     text-decoration: none;
     font-size: 0.85rem;
     font-weight: 500;
@@ -446,7 +446,7 @@ body::before {
 }
 
 .main-nav a:hover {
-    color: #f5f5f5;
+    color: #000000;
 }
 
 .main-nav a:focus-visible {
@@ -483,7 +483,7 @@ body::before {
 
 /* Active link styling */
 .main-nav a.active {
-    color: #f5f5f5;
+    color: #000000;
 }
 
 /* Gallery hint button */
@@ -492,11 +492,11 @@ body::before {
     bottom: 2rem;
     right: 2rem;
     z-index: 100;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    color: rgba(0, 0, 0, 0.8);
     height: 44px;
     padding: 0 15px;
     border-radius: 0;
@@ -563,17 +563,17 @@ body::before {
 .image-title {
     position: relative;
     z-index: 50;
-    max-width: 800px;
+    max-width: 900px;
     text-align: center;
 }
 
 .image-title h1 {
     font-family: var(--font-heading);
-    font-size: clamp(2rem, 8vw, 4.5rem);
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
     font-weight: 700;
-    line-height: 1.1;
-    margin: 0;
-    letter-spacing: var(--tracking-wide);
+    line-height: 1.2;
+    margin: 0 0 0.5rem 0;
+    letter-spacing: -0.02em;
 }
 
 .image-title h1.visible {
@@ -582,10 +582,11 @@ body::before {
 
 .image-meta {
     font-family: var(--font-body);
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: var(--color-secondary);
-    margin-top: 1rem;
+    margin-top: 0.5rem;
     font-style: italic;
+    line-height: 1.5;
 }
 
 .image-meta.visible {
@@ -681,7 +682,7 @@ body::before {
 .carousel-nav button {
     background: none;
     border: none;
-    color: white;
+    color: black;
     font-size: 3rem;
     cursor: pointer;
     opacity: 0.4;
@@ -718,10 +719,10 @@ body::before {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(17, 17, 17, 0.95);
+    background: rgba(255, 255, 255, 0.95);
     padding: 2rem;
     border: 2px solid #ff0000;
-    color: #ff6666;
+    color: #cc0000;
     display: none;
     z-index: 200;
     text-align: center;
@@ -866,7 +867,7 @@ body::before {
 
 .thumbnail-item:hover {
     transform: scale(1.05);
-    border-color: rgba(255, 255, 255, 0.3);
+    border-color: rgba(0, 0, 0, 0.3);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
@@ -1090,6 +1091,9 @@ body::before {
     position: relative;
     overflow: hidden;
     background: #1a1a1a;
+    opacity: 0.65;
+    transition: opacity 0.3s ease, border 0.3s ease;
+    border: 2px solid transparent;
 }
 
 .grid-item a {
@@ -1108,7 +1112,17 @@ body::before {
     transition: transform 0.6s var(--ease-anticipatory);
 }
 
+.grid-item:hover {
+    opacity: 1;
+}
+
 .grid-item:hover img {
+    transform: scale(1.05);
+}
+
+.grid-item.active {
+    opacity: 1;
+    border-color: var(--color-accent);
     transform: scale(1.05);
 }
 
@@ -1155,25 +1169,24 @@ body::before {
 }
 
 .filter-btn {
-    background: transparent;
-    border: 1px solid var(--color-secondary);
-    color: var(--color-secondary);
-    padding: 0.75rem 1.75rem;
+    all: unset;
     cursor: pointer;
+    padding: 0.5rem 1rem;
+    color: var(--color-secondary);
+    border: 1px solid transparent;
+    border-radius: 20px;
     font-family: var(--font-body);
     font-size: 0.9rem;
     font-weight: 600;
     letter-spacing: 1px;
-    transition: background 0.3s var(--ease-quick),
-                border-color 0.3s var(--ease-quick),
-                color 0.3s var(--ease-quick),
-                transform 0.15s var(--ease-quick);
+    transition: all 0.3s var(--ease-quick);
     text-transform: uppercase;
+    box-sizing: border-box;
 }
 
 .filter-btn:hover {
-    border-color: var(--color-accent);
-    color: var(--color-accent);
+    color: var(--color-primary);
+    border-color: var(--color-secondary);
 }
 
 .filter-btn:active {
@@ -1181,9 +1194,8 @@ body::before {
 }
 
 .filter-btn.active {
-    background: var(--color-accent);
+    color: var(--color-accent);
     border-color: var(--color-accent);
-    color: var(--color-background);
 }
 
 .filter-btn:focus-visible {
@@ -2342,7 +2354,7 @@ body::before {
         width: 80%;
         max-width: 300px;
         height: 100vh;
-        background: rgba(17, 17, 17, 0.98);
+        background: rgba(255, 250, 252, 0.98);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         flex-direction: column;
@@ -2350,7 +2362,7 @@ body::before {
         padding: 5rem 2rem 2rem 2rem;
         transition: right 0.3s var(--ease-anticipatory);
         z-index: 100;
-        border-left: 1px solid rgba(255, 255, 255, 0.1);
+        border-left: 1px solid rgba(0, 0, 0, 0.15);
         overflow-y: auto;
     }
 
@@ -2361,7 +2373,7 @@ body::before {
     .main-nav a {
         font-size: 1rem;
         padding: 1rem 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         position: relative;
     }
 
@@ -2377,7 +2389,7 @@ body::before {
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0, 0, 0, 0.5);
+        background: rgba(0, 0, 0, 0.3);
         z-index: -1;
     }
 

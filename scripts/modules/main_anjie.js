@@ -1,13 +1,13 @@
 // main.js - Main Application Controller
 // Initializes all modules and manages application state
 
-import { Carousel } from './carousel.js';
-import { Grid } from './grid.js';
-import { Lightbox } from './lightbox.js';
-// import { Gallery } from './gallery.js'; // DISABLED: Missing CSS causing persistent bar bug
-import { Animations } from './animations.js';
-import { announceToScreenReader } from './utils.js';
-import { initAboutSection } from '../about-section.js';
+import { Carousel } from './carousel_anjie.js';
+import { Grid } from './grid_anjie.js';
+import { Lightbox } from './lightbox_anjie.js';
+// import { Gallery } from './gallery_anjie.js'; // DISABLED: Missing CSS causing persistent bar bug
+import { Animations } from './animations_anjie.js';
+import { announceToScreenReader } from './utils_anjie.js';
+import { initAboutSection } from '../about-section_anjie.js';
 
 class PortfolioApp {
     constructor() {
@@ -44,7 +44,7 @@ class PortfolioApp {
     }
 
     async loadData() {
-        const response = await fetch('data/portfolio-data.json');
+        const response = await fetch('data/portfolio-data_anjie.json');
         if (!response.ok) {
             throw new Error(`Failed to load data: ${response.statusText}`);
         }

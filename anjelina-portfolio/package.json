@@ -1,0 +1,33 @@
+{
+  "name": "anjelina-portfolio",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@sanity/client": "6.12.0",
+    "@sanity/image-url": "1.0.2",
+    "@sanity/vision": "3.30.0",
+    "framer-motion": "11.0.0",
+    "next": "15.5.4",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-focus-lock": "2.9.6",
+    "react-remove-scroll": "2.5.7",
+    "sanity": "3.30.0",
+    "styled-components": "6.1.8"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "3.2.0",
+    "@types/node": "20.17.14",
+    "@types/react": "19.0.3",
+    "@types/react-dom": "19.0.3",
+    "eslint": "9.20.0",
+    "eslint-config-next": "15.5.4",
+    "typescript": "5.7.3"
+  }
+}

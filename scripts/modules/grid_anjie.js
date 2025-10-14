@@ -1,7 +1,7 @@
 // grid.js - Portfolio Grid Module
 // Handles portfolio grid rendering, filtering, and pagination
 
-import { debounce } from './utils.js';
+import { debounce } from './utils_anjie.js';
 
 export class Grid {
     constructor(portfolioData) {
@@ -338,6 +338,13 @@ export class Grid {
         // Click handler to open lightbox
         link.addEventListener('click', (e) => {
             e.preventDefault();
+
+            // Remove active class from all grid items
+            document.querySelectorAll('.grid-item').forEach(item => item.classList.remove('active'));
+
+            // Add active class to clicked item
+            gridItem.classList.add('active');
+
             if (window.LightboxController) {
                 // Pass the filtered data so lightbox navigates within current filter
                 window.LightboxController.open(work, index, this.filteredData);
