@@ -6,13 +6,6 @@ export default function ContactPage() {
       <Header />
 
       <section className="contact-section" aria-labelledby="contact-heading">
-        <h2 id="contact-heading" className="section-title">Get In Touch</h2>
-
-        <p className="contact-intro">
-          For commissions, press inquiries, or to be added to the private mailing list for
-          upcoming shows and available work, please reach out directly.
-        </p>
-
         <a
           href="mailto:contact@anjelinavillalobos.com"
           className="email-link"
@@ -38,17 +31,15 @@ export default function ContactPage() {
           </a>
 
           <a
-            href="https://artsy.net"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="View collection on Artsy"
+            href="mailto:contact@anjelinavillalobos.com"
+            aria-label="Email Anjelina Villalobos"
             className="social-icon"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M3 21L12 3L21 21H3Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
-              <line x1="7" y1="16" x2="17" y2="16" stroke="currentColor" strokeWidth="1.5"/>
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M22 6l-10 7L2 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-            <span className="social-label">Artsy</span>
+            <span className="social-label">Email</span>
           </a>
 
           <a
