@@ -6,19 +6,42 @@ export const metadata: Metadata = {
     default: 'Anjelina Villalobos | Contemporary Artist',
     template: '%s | Anjelina Villalobos'
   },
-  description: 'Contemporary artist portfolio showcasing original paintings and artwork. Exploring the intersection of digital and analog mark-making.',
-  keywords: ['artist', 'contemporary art', 'paintings', 'abstract art', 'portfolio'],
+  description: 'Contemporary artist working at the volatile intersection of chaos and control. Visceral narratives through layered abstraction where digital precision collides with gestural abandon.',
+  keywords: ['artist', 'contemporary art', 'paintings', 'abstract art', 'portfolio', 'layered abstraction', 'digital analog art'],
   authors: [{ name: 'Anjelina Villalobos' }],
+  creator: 'Anjelina Villalobos',
   openGraph: {
-    title: 'Anjelina Villalobos | Contemporary Artist',
-    description: 'Contemporary artist portfolio showcasing original paintings and artwork.',
+    title: 'Anjelina Villalobos - Contemporary Abstract Artist',
+    description: 'Visceral narratives through layered abstraction where digital precision collides with gestural abandon. Explore original paintings and artwork.',
     type: 'website',
+    locale: 'en_US',
+    url: 'https://anjelinavillalobos.com',
     siteName: 'Anjelina Villalobos Portfolio',
+    images: [
+      {
+        url: '/opengraph-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Anjelina Villalobos - Contemporary Abstract Artist',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Anjelina Villalobos | Contemporary Artist',
-    description: 'Contemporary artist portfolio showcasing original paintings and artwork.',
+    title: 'Anjelina Villalobos - Contemporary Abstract Artist',
+    description: 'Visceral narratives through layered abstraction. Explore original paintings and artwork.',
+    creator: '@anjelinavillalobos',
+    images: ['/opengraph-image.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 };
 

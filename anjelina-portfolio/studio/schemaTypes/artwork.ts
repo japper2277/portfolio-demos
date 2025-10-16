@@ -49,19 +49,18 @@ export default defineType({
       name: 'medium',
       title: 'Medium',
       type: 'string',
-      placeholder: 'e.g., Oil on canvas',
+      description: 'e.g., Oil on canvas',
     }),
     defineField({
       name: 'dimensions',
       title: 'Dimensions',
       type: 'string',
-      placeholder: 'e.g., 48x36 in',
+      description: 'e.g., 48x36 in',
     }),
     defineField({
       name: 'description',
       title: 'Description',
       type: 'text',
-      rows: 4,
     }),
     defineField({
       name: 'forSale',

@@ -1,105 +1,146 @@
+'use client';
+
+import { useState } from 'react';
 import Image from 'next/image';
 import Header from '@/components/Header';
-import Link from 'next/link';
+import { ArtistSchema } from '@/components/StructuredData';
 
 export default function AboutPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  // Close modal on escape key
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      closeModal();
+    }
+  };
+
   return (
     <>
+      <ArtistSchema />
       <Header />
 
-      <section className="about-section" aria-labelledby="about-heading">
-        {/* Hero Image Block */}
-        <div className="about-hero">
-          <div className="about-hero-image">
-            <Image
-              src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=1400&fm=webp"
-              alt="Artist at work in their studio, surrounded by paintings, brushes, and creative materials"
-              className="artist-photo-large"
-              loading="lazy"
-              width={1400}
-              height={900}
-            />
-            <div className="image-caption">
-              <span className="caption-text">Studio, Brooklyn — 2024</span>
-            </div>
-          </div>
-        </div>
+      <div className="about-page-container">
+        <main className="about-page-grid">
 
-        {/* Content Grid */}
-        <div className="about-content-grid">
-          {/* Main Bio Column */}
-          <div className="bio-main">
-            <h2 id="about-heading" className="about-main-heading">Anjelina Villalobos</h2>
-
-            <div className="about-intro">
-              <p className="lead-text">
-                Working at the volatile intersection of chaos and control, Anjelina Villalobos
-                constructs visceral narratives through layered abstraction—where digital
-                precision collides with gestural abandon.
-              </p>
-            </div>
-
-            <div className="bio-body">
-              <p>
-                Born in Los Angeles in 1989, Villalobos emerged from the early 2010s street
-                art scene before pivoting to studio practice. Her work interrogates the
-                tension between analog mark-making and computational systems, often building
-                paintings through dozens of translucent layers that suggest depth, memory,
-                and digital glitch artifacts.
-              </p>
-
-              <p>
-                Rather than depicting technology, she <em>performs</em> it—using painting as
-                a slow, deliberate response to the speed and compression of digital life.
-                Each canvas becomes an archaeological site: traces of previous iterations
-                bleed through, creating what she calls &quot;temporal collisions.&quot;
-              </p>
-
-              <blockquote className="pull-quote">
-                &quot;I&apos;m not interested in making paintings about screens. I&apos;m interested
-                in making paintings that feel like what it&apos;s like to live with screens—fragmented,
-                layered, haunted by what came before.&quot;
-              </blockquote>
-
-              <p>
-                Her process is ritualistic. She begins each work digitally, generating
-                algorithmic color palettes and compositional scaffolds, then abandons the
-                screen entirely. The paintings emerge through weeks of additive and
-                subtractive mark-making: pouring, scraping, sanding back to earlier layers,
-                building up again. What remains is neither purely digital nor analog, but
-                exists in productive tension between both.
-              </p>
-            </div>
-
-            {/* CV Link */}
-            <div className="about-cta">
-              <Link href="/contact" className="cv-link-primary">
-                Commission & Inquiry
-              </Link>
-            </div>
-          </div>
-
-          {/* Sidebar Details */}
-          <aside className="bio-sidebar">
-            <div className="sidebar-block">
-              <h3 className="sidebar-heading">Education</h3>
-              <p className="sidebar-text">
-                <strong>MFA Painting</strong><br />
-                Yale School of Art, 2015
-              </p>
-              <p className="sidebar-text">
-                <strong>BFA Studio Art</strong><br />
-                UCLA, 2011
-              </p>
+          {/* Visual Column: Image of the artist */}
+          <aside className="about-image-column">
+            <div className="about-image-wrapper">
+              <Image
+                src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=600&fm=webp"
+                alt="A portrait of the artist, Anjelina Villalobos"
+                width={600}
+                height={800}
+                className="about-artist-image"
+                priority
+              />
             </div>
           </aside>
+
+          {/* Content Column: Bio, Details, and Connect */}
+          <div className="about-content-column">
+
+            {/* Name and Bio Section */}
+            <div>
+              <h1 className="about-page-title">Anjelina Villalobos</h1>
+              <p className="about-page-text">
+                Originally from Miami, I now work as a painter and teacher based in New York City. My art explores the space between introspection and dreamscapes, using acrylics to create self-portraits that delve into personal narratives.
+              </p>
+              <p className="about-page-text">
+                Alongside these, I produce nonrepresentational works that use vivid color and soft imagery to capture fleeting moods and the textures of memory. My goal is to invite viewers into a contemplative space where emotion and color intertwine.
+              </p>
+            </div>
+
+            {/* Connect / Call to Action Section */}
+            <div className="about-connect-section">
+              <h2 className="about-connect-heading">Connect</h2>
+              <div className="about-connect-buttons">
+                <button
+                  onClick={openModal}
+                  className="about-resume-btn"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                  View Résumé
+                </button>
+                <a href="https://instagram.com/anjelinavillalobos" target="_blank" rel="noopener noreferrer" className="about-social-link">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                  </svg>
+                  <span>Instagram</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+
+      {/* Résumé Modal */}
+      {isModalOpen && (
+        <div
+          className="resume-modal-overlay"
+          onClick={closeModal}
+          onKeyDown={handleKeyDown}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="resume-title"
+        >
+          <div
+            className="resume-modal-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={closeModal}
+              className="resume-modal-close"
+              aria-label="Close modal"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+
+            <h2 id="resume-title" className="resume-modal-title">Anjelina Villalobos</h2>
+            <p className="resume-modal-subtitle">Painter & Teacher</p>
+
+            <div className="resume-modal-body">
+              <div className="resume-section">
+                <h3 className="resume-section-heading">Contact</h3>
+                <p>New York, NY</p>
+                <p>hello@anjelinavillalobos.art</p>
+              </div>
+
+              <div className="resume-section">
+                <h3 className="resume-section-heading">Education</h3>
+                <p className="resume-item-title">Parsons School of Design, New York, NY</p>
+                <p>Bachelor of Fine Arts (BFA), 2024</p>
+              </div>
+
+              <div className="resume-section">
+                <h3 className="resume-section-heading">Experience</h3>
+                <p className="resume-item-title">Art Teacher, NYC Public Schools</p>
+                <p className="resume-item-date">2024 - Present</p>
+                <ul className="resume-list">
+                  <li>Developed and taught acrylic painting curriculum for high school students.</li>
+                  <li>Organized and curated the annual student art exhibition.</li>
+                </ul>
+              </div>
+
+              <div className="resume-section">
+                <h3 className="resume-section-heading">Skills</h3>
+                <p>Acrylic Painting, Portraiture, Nonrepresentational Art, Art Curation, Curriculum Development.</p>
+              </div>
+            </div>
+          </div>
         </div>
-      </section>
+      )}
     </>
   );
 }
-
-export const metadata = {
-  title: 'About | Anjelina Villalobos',
-  description: 'Learn about contemporary artist Anjelina Villalobos and her artistic practice working at the intersection of digital and analog mark-making.',
-};

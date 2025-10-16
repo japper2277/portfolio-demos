@@ -34,10 +34,13 @@ export default function YearFilter({
         onClick={() => onYearChange('all')}
         aria-pressed={selectedYear === 'all'}
         aria-label={`Show all ${artworks.length} artworks`}
+        style={{
+          animation: 'fadeInFilter 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both',
+        }}
       >
         All
       </button>
-      {years.map(year => {
+      {years.map((year, index) => {
         const count = artworkCountByYear[year] || 0;
         return (
           <button
@@ -46,6 +49,9 @@ export default function YearFilter({
             onClick={() => onYearChange(year)}
             aria-pressed={selectedYear === year}
             aria-label={`Filter by year ${year} (${count} ${count === 1 ? 'artwork' : 'artworks'})`}
+            style={{
+              animation: `fadeInFilter 0.4s cubic-bezier(0.4, 0, 0.2, 1) ${0.15 + index * 0.05}s both`,
+            }}
           >
             {year}
           </button>

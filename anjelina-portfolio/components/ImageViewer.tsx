@@ -3,24 +3,36 @@
 
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import Image from 'next/image';
+import { useSwipeable } from 'react-swipeable';
 import type { Artwork } from '@/lib/mockData';
+import { artworks as allArtworks } from '@/lib/mockData';
 import Filmstrip from './Filmstrip';
+import YearFilter from './YearFilter';
 
 interface ImageViewerProps {
   artworks: Artwork[];
   selectedYear: number | 'all';
   onYearChange: (year: number | 'all') => void;
+  currentArtworkIndex?: number;
+  onArtworkChange?: (index: number) => void;
 }
 
-export default function ImageViewer({ artworks, selectedYear, onYearChange }: ImageViewerProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+export default function ImageViewer({
+  artworks,
+  selectedYear,
+  onYearChange,
+  currentArtworkIndex = 0,
+  onArtworkChange
+}: ImageViewerProps) {
+  const [currentIndex, setCurrentIndex] = useState(currentArtworkIndex);
   const [loading, setLoading] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [fadeOut, setFadeOut] = useState(false);
 
   // Filter artworks by selected year
   const filteredArtworks = useMemo(() => {
@@ -32,23 +44,37 @@ export default function ImageViewer({ artworks, selectedYear, onYearChange }: Im
 
   const currentArtwork = filteredArtworks[currentIndex];
 
-  // Reset to first artwork when year filter changes
+  // Sync with external currentArtworkIndex
   useEffect(() => {
-    setCurrentIndex(0);
-    setImageLoaded(false);
-    setImageError(false);
+    if (currentArtworkIndex !== currentIndex) {
+      setCurrentIndex(currentArtworkIndex);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentArtworkIndex]);
+
+  // Reset to first artwork when year filter changes with fade
+  useEffect(() => {
+    setFadeOut(true);
     setIsTransitioning(true);
-    const timer = setTimeout(() => setIsTransitioning(false), 500);
-    return () => clearTimeout(timer);
+
+    setTimeout(() => {
+      setCurrentIndex(0);
+      setImageLoaded(false);
+      setImageError(false);
+      setFadeOut(false);
+
+      setTimeout(() => setIsTransitioning(false), 500);
+    }, 300);
   }, [selectedYear]);
 
 
-  // Navigation handler
-  const navigate = (direction: number) => {
+  // Navigation handler with smooth fade transitions
+  const navigate = useCallback((direction: number) => {
+    if (isTransitioning) return; // Prevent rapid clicks
+
+    // Start fade out
+    setFadeOut(true);
     setIsTransitioning(true);
-    setLoading(true);
-    setImageLoaded(false);
-    setImageError(false);
 
     let newIndex = currentIndex + direction;
 
@@ -59,11 +85,20 @@ export default function ImageViewer({ artworks, selectedYear, onYearChange }: Im
       newIndex = 0;
     }
 
+    // Wait for fade out, then change image
     setTimeout(() => {
+      setImageLoaded(false);
+      setImageError(false);
       setCurrentIndex(newIndex);
-      setIsTransitioning(false);
-    }, 50);
-  };
+      onArtworkChange?.(newIndex);
+      setFadeOut(false);
+
+      // Reset transitioning after fade in completes
+      setTimeout(() => {
+        setIsTransitioning(false);
+      }, 500);
+    }, 300); // Faster fade out, smoother overall
+  }, [isTransitioning, currentIndex, filteredArtworks.length, onArtworkChange]);
 
   // Preload adjacent images for smoother navigation
   useEffect(() => {
@@ -84,7 +119,8 @@ export default function ImageViewer({ artworks, selectedYear, onYearChange }: Im
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') {
         navigate(-1);
-      } else if (e.key === 'ArrowRight') {
+      } else if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Spacebar') {
+        e.preventDefault(); // Prevent page scroll on spacebar
         navigate(1);
       } else if (e.key === 'Escape' && isFullscreen) {
         setIsFullscreen(false);
@@ -93,13 +129,21 @@ export default function ImageViewer({ artworks, selectedYear, onYearChange }: Im
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentIndex, isFullscreen]); // Re-bind when currentIndex changes
+  }, [navigate, isFullscreen]);
+
+  // Swipe handlers for mobile
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: () => !isFullscreen && navigate(1),
+    onSwipedRight: () => !isFullscreen && navigate(-1),
+    preventScrollOnSwipe: true,
+    trackMouse: false, // Disable for desktop, only touch
+  });
 
   return (
     <>
       {/* Main Viewer */}
       <div
+        {...swipeHandlers}
         className="main-viewer"
         onClick={() => setIsFullscreen(true)}
         role="region"
@@ -145,55 +189,86 @@ export default function ImageViewer({ artworks, selectedYear, onYearChange }: Im
               setImageError(true);
             }}
             style={{
-              opacity: imageLoaded && !isTransitioning ? 1 : 0,
-              transition: 'opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+              opacity: imageLoaded && !fadeOut ? 1 : 0,
+              transition: fadeOut
+                ? 'opacity 0.3s cubic-bezier(0.4, 0, 0.6, 1)'
+                : 'opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
             }}
           />
         )}
-
-        {/* Ghost UI Navigation Buttons */}
-        <button
-          className="viewer-nav prev"
-          onClick={(e) => {
-            e.stopPropagation();
-            navigate(-1);
-          }}
-          aria-label={`Previous artwork (${currentIndex === 0 ? filteredArtworks.length : currentIndex} of ${filteredArtworks.length})`}
-          tabIndex={0}
-        >
-          &lt;
-        </button>
-
-        <button
-          className="viewer-nav next"
-          onClick={(e) => {
-            e.stopPropagation();
-            navigate(1);
-          }}
-          aria-label={`Next artwork (${currentIndex + 2 > filteredArtworks.length ? 1 : currentIndex + 2} of ${filteredArtworks.length})`}
-          tabIndex={0}
-        >
-          &gt;
-        </button>
       </div>
 
       {/* Artwork Info */}
-      <div className="artwork-info" role="status" aria-live="polite">
+      <div
+        className="artwork-info"
+        role="status"
+        aria-live="polite"
+        style={{
+          opacity: fadeOut ? 0 : 1,
+          transition: fadeOut
+            ? 'opacity 0.3s cubic-bezier(0.4, 0, 0.6, 1)'
+            : 'opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+        }}
+      >
         <div className="artwork-year" aria-label="Year created">{currentArtwork.year}</div>
         <h1 id="artwork-title">{currentArtwork.title}</h1>
         <p aria-label="Medium and dimensions">
           {currentArtwork.medium}, {currentArtwork.dimensions}
         </p>
-        <div className="artwork-counter" aria-label="Artwork position">
-          {currentIndex + 1} of {filteredArtworks.length}
+
+        {/* Price and Availability */}
+        <div className="artwork-pricing">
+          {currentArtwork.availability === 'available' && (
+            <span className="availability-badge available">
+              {currentArtwork.inquireForPrice
+                ? 'Available - Inquire for Price'
+                : currentArtwork.price
+                  ? `Available - ${currentArtwork.currency === 'USD' ? '$' : '€'}${currentArtwork.price.toLocaleString()}`
+                  : 'Available'}
+            </span>
+          )}
+          {currentArtwork.availability === 'sold' && (
+            <span className="availability-badge sold">Sold</span>
+          )}
+          {currentArtwork.availability === 'on-loan' && (
+            <span className="availability-badge on-loan">On Loan</span>
+          )}
+          {currentArtwork.availability === 'private-collection' && (
+            <span className="availability-badge private">Private Collection</span>
+          )}
         </div>
       </div>
+
+      {/* Year Filter */}
+      <YearFilter
+        artworks={allArtworks}
+        selectedYear={selectedYear}
+        onYearChange={onYearChange}
+      />
 
       {/* Filmstrip */}
       <Filmstrip
         artworks={filteredArtworks}
         currentIndex={currentIndex}
-        onSelectArtwork={setCurrentIndex}
+        onSelectArtwork={(index) => {
+          if (index === currentIndex || isTransitioning) return;
+
+          // Fade out current artwork
+          setFadeOut(true);
+          setIsTransitioning(true);
+
+          setTimeout(() => {
+            setImageLoaded(false);
+            setImageError(false);
+            setCurrentIndex(index);
+            onArtworkChange?.(index);
+            setFadeOut(false);
+
+            setTimeout(() => {
+              setIsTransitioning(false);
+            }, 500);
+          }, 300);
+        }}
         selectedYear={selectedYear}
       />
 
@@ -202,14 +277,59 @@ export default function ImageViewer({ artworks, selectedYear, onYearChange }: Im
         <div
           className="lightbox-overlay"
           onClick={() => setIsFullscreen(false)}
+          style={{
+            animation: 'fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          }}
         >
           <button
             className="lightbox-close"
             onClick={() => setIsFullscreen(false)}
             aria-label="Close fullscreen"
+            style={{
+              animation: 'fadeInScale 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+            }}
           >
             ×
           </button>
+
+          {/* Lightbox Navigation Buttons */}
+          <button
+            className="lightbox-nav prev"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(-1);
+            }}
+            aria-label="Previous artwork in fullscreen"
+            style={{
+              animation: 'fadeInLeft 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+            }}
+          >
+            ‹
+          </button>
+          <button
+            className="lightbox-nav next"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(1);
+            }}
+            aria-label="Next artwork in fullscreen"
+            style={{
+              animation: 'fadeInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+            }}
+          >
+            ›
+          </button>
+
+          {/* Artwork Counter */}
+          <div
+            className="lightbox-counter"
+            style={{
+              animation: 'fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+            }}
+          >
+            {currentIndex + 1} / {filteredArtworks.length}
+          </div>
+
           <Image
             src={currentArtwork.image}
             alt={currentArtwork.title}
@@ -221,6 +341,10 @@ export default function ImageViewer({ artworks, selectedYear, onYearChange }: Im
               maxHeight: '95vh',
               objectFit: 'contain',
               cursor: 'zoom-out',
+              opacity: fadeOut ? 0 : 1,
+              transition: fadeOut
+                ? 'opacity 0.3s cubic-bezier(0.4, 0, 0.6, 1)'
+                : 'opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
             }}
             onClick={(e) => e.stopPropagation()}
           />

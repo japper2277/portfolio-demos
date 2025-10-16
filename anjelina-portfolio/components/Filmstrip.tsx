@@ -18,7 +18,6 @@ export default function Filmstrip({
   artworks,
   currentIndex,
   onSelectArtwork,
-  selectedYear = 'all',
 }: FilmstripProps) {
   const carouselRef = useRef<HTMLUListElement>(null);
   const activeItemRef = useRef<HTMLButtonElement>(null);
@@ -54,7 +53,13 @@ export default function Filmstrip({
           const isActive = index === currentIndex;
 
           return (
-            <li key={artwork.id}>
+            <li
+              key={artwork.id}
+              style={{
+                opacity: 1,
+                animation: `fadeInThumbnail 0.4s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.03}s both`,
+              }}
+            >
               <button
                 ref={isActive ? activeItemRef : null}
                 className={`thumbnail-item ${isActive ? 'active' : ''}`}
@@ -65,8 +70,8 @@ export default function Filmstrip({
                   <Image
                     src={artwork.thumbnail}
                     alt=""
-                    width={120}
-                    height={80}
+                    width={100}
+                    height={100}
                     loading={index < 6 ? 'eager' : 'lazy'}
                     style={{ objectFit: 'cover', objectPosition: 'center' }}
                   />

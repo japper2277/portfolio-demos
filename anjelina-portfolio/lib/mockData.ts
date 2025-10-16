@@ -9,6 +9,10 @@ export interface Artwork {
   dimensions: string;
   image: string;
   thumbnail: string;
+  price?: number;
+  currency: 'USD' | 'EUR';
+  availability: 'available' | 'sold' | 'on-loan' | 'private-collection';
+  inquireForPrice?: boolean;
 }
 
 export const artworks: Artwork[] = [
@@ -19,7 +23,10 @@ export const artworks: Artwork[] = [
     medium: "Oil on canvas",
     dimensions: "48x36 in",
     image: "https://images.unsplash.com/photo-1578301978018-3005759f48f7?w=1200&q=80",
-    thumbnail: "https://images.unsplash.com/photo-1578301978018-3005759f48f7?w=200&q=70"
+    thumbnail: "https://images.unsplash.com/photo-1578301978018-3005759f48f7?crop=entropy&fit=crop&w=200&h=200&q=70",
+    price: 4500,
+    currency: 'USD',
+    availability: 'available'
   },
   {
     id: 2,
@@ -28,7 +35,10 @@ export const artworks: Artwork[] = [
     medium: "Acrylic on wood panel",
     dimensions: "24x24 in",
     image: "https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=1200&q=80",
-    thumbnail: "https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=200&q=70"
+    thumbnail: "https://images.unsplash.com/photo-1557672172-298e090bd0f1?crop=entropy&fit=crop&w=200&h=200&q=70",
+    price: 2800,
+    currency: 'USD',
+    availability: 'available'
   },
   {
     id: 3,
@@ -37,7 +47,9 @@ export const artworks: Artwork[] = [
     medium: "Mixed media on paper",
     dimensions: "18x24 in",
     image: "https://images.unsplash.com/photo-1533158326339-7f3cf2404354?w=1200&q=80",
-    thumbnail: "https://images.unsplash.com/photo-1533158326339-7f3cf2404354?w=200&q=70"
+    thumbnail: "https://images.unsplash.com/photo-1533158326339-7f3cf2404354?crop=entropy&fit=crop&w=200&h=200&q=70",
+    currency: 'USD',
+    availability: 'sold'
   },
   {
     id: 4,
@@ -46,7 +58,9 @@ export const artworks: Artwork[] = [
     medium: "Oil and cold wax",
     dimensions: "30x30 in",
     image: "https://images.unsplash.com/photo-1556139943-4bdca53adf1e?w=1200&q=80",
-    thumbnail: "https://images.unsplash.com/photo-1556139943-4bdca53adf1e?w=200&q=70"
+    thumbnail: "https://images.unsplash.com/photo-1556139943-4bdca53adf1e?crop=entropy&fit=crop&w=200&h=200&q=70",
+    currency: 'USD',
+    availability: 'private-collection'
   },
   {
     id: 5,
@@ -55,7 +69,10 @@ export const artworks: Artwork[] = [
     medium: "Acrylic on canvas",
     dimensions: "60x48 in",
     image: "https://images.unsplash.com/photo-1561998338-13ad7883b20f?w=1200&q=80",
-    thumbnail: "https://images.unsplash.com/photo-1561998338-13ad7883b20f?w=200&q=70"
+    thumbnail: "https://images.unsplash.com/photo-1561998338-13ad7883b20f?crop=entropy&fit=crop&w=200&h=200&q=70",
+    currency: 'USD',
+    availability: 'on-loan',
+    inquireForPrice: true
   },
   {
     id: 6,
@@ -64,6 +81,9 @@ export const artworks: Artwork[] = [
     medium: "Ink and gesso on board",
     dimensions: "20x20 in",
     image: "https://images.unsplash.com/photo-1564399579883-451a5d44ec08?w=1200&q=80",
-    thumbnail: "https://images.unsplash.com/photo-1564399579883-451a5d44ec08?w=200&q=70"
+    thumbnail: "https://images.unsplash.com/photo-1564399579883-451a5d44ec08?crop=entropy&fit=crop&w=200&h=200&q=70",
+    price: 1200,
+    currency: 'USD',
+    availability: 'available'
   }
 ];
