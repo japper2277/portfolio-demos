@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Portfolio</title>
+    <style>
+        /* --- Global Styles & Fonts --- */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Merriweather:wght@400;700&display=swap');
+
+        :root {
+            --text-color: #333;
+            --secondary-text: #666;
+            --primary-font: 'Inter', sans-serif;
+            --serif-font: 'Merriweather', serif;
+            --background-color: #f8f7f5; /* Light grey background */
+            --content-bg: #fff;
+            --border-color: #e8e8e8;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--primary-font);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            scroll-behavior: smooth; /* Add this for smooth scrolling */
+        }
+
+        /* --- New Header Section --- */
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border-color);
+            background-color: var(--content-bg);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .main-header .artist-name {
+            font-family: var(--serif-font);
+            font-weight: 700;
+            font-size: 1.5em;
+            margin: 0;
+        }
+        .main-header .header-nav a {
+            margin-left: 30px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 600;
+            font-size: 1em;
+        }
+
+        /* --- Main Layout: Sidebar + Content --- */
+        .page-container {
+            display: flex;
+            align-items: flex-start; /* Important for sticky positioning */
+        }
+
+        /* --- Sidebar Navigation (Sticky) --- */
+        .sidebar {
+            flex: 0 0 320px; /* Fixed width for the sidebar */
+            padding: 40px;
+            border-right: 1px solid var(--border-color);
+            box-sizing: border-box;
+            position: sticky;
+            top: 77px; /* Height of the header to stick below it */
+            height: calc(100vh - 77px); /* Make sidebar viewport height minus header */
+            background-color: var(--content-bg);
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar-nav-scrollable {
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+        .sidebar .year-group h3 {
+            font-family: var(--serif-font);
+            font-size: 1.2em;
+            margin: 0 0 15px 0;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+        .sidebar .year-group:not(:first-child) h3 {
+             margin-top: 30px;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar ul li a {
+            display: block;
+            padding: 8px 0;
+            text-decoration: none;
+            color: var(--secondary-text);
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .sidebar ul li a:hover {
+            color: var(--text-color);
+        }
+        .sidebar ul li a.active {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        /* --- New Sidebar Details Panel --- */
+        .sidebar-details {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            flex-shrink: 0; /* Prevents this section from shrinking */
+        }
+        .sidebar-details h4 {
+            font-family: var(--serif-font);
+            font-size: 1.4em;
+            margin: 0 0 10px 0;
+        }
+        .sidebar-details p {
+            margin: 4px 0;
+            line-height: 1.6;
+            color: var(--secondary-text);
+        }
+        .sidebar-details p.status-available {
+            color: #059669; /* Darker green */
+            font-weight: 600;
+        }
+        .sidebar-details p.status-sold {
+            color: #b91c1c; /* Darker red */
+            font-style: italic;
+        }
+
+        /* --- Main Content: Artwork Display --- */
+        .main-content {
+            flex: 1; /* Take remaining space */
+            box-sizing: border-box;
+            background-color: var(--content-bg);
+        }
+        .artwork-wrapper {
+            height: calc(100vh - 77px); /* 100vh minus header height */
+        }
+        .artwork-display {
+            width: 100%;
+            height: 100%;
+        }
+        .artwork-display img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Fill the container */
+        }
+
+        /* --- Additional Scrollable Content --- */
+        .scrollable-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 80px 40px;
+        }
+        .scrollable-content h2 {
+            font-family: var(--serif-font);
+            font-size: 2em;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .artist-bio {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            line-height: 1.7;
+        }
+        .artist-bio img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <h1 class="artist-name">Anjelina Villalobos</h1>
+        <nav class="header-nav">
+            <a href="#about-section">About</a>
+            <a href="mailto:contact@anjelinavillalobos.com">Contact</a>
+        </nav>
+    </header>
+
+    <div class="page-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-nav-scrollable" id="sidebar-nav">
+                <!-- Year navigation will be populated by script -->
+            </div>
+            <div class="sidebar-details">
+                <h4 id="sidebar-artwork-title"></h4>
+                <p id="sidebar-artwork-details"></p>
+                <p id="sidebar-artwork-price"></p>
+            </div>
+        </aside>
+
+        <!-- Main Artwork Display Area -->
+        <main class="main-content">
+            <div class="artwork-wrapper">
+                <div class="artwork-display">
+                    <img id="main-artwork-img" src="" alt="">
+                </div>
+            </div>
+
+            <!-- New scrollable content section -->
+            <section class="scrollable-content" id="about-section">
+                <h2>About the Artist</h2>
+                <div class="artist-bio">
+                    <img src="https://picsum.photos/seed/artist-photo/200/200" alt="Photo of the artist.">
+                    <div>
+                        <p>Anjelina Villalobos is a contemporary painter whose work explores the emotional resonance of natural landscapes. Her use of color and light invites viewers into a world of serene and contemplative beauty.</p>
+                        <p><strong>Contact:</strong> <a href="#">contact@anjelinavillalobos.com</a></p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Sample Artwork Data ---
+            const artworks = [
+                { id: 0, title: "Echoes in Ochre", year: 2024, details: "Oil on canvas, 48×36 in", price: "Available - $4,500", imageSeed: "main-artwork" },
+                { id: 1, title: "Mountain Mist", year: 2024, details: "Oil on canvas, 30x40 in", price: "Available - $3,200", imageSeed: "mountain-mist" },
+                { id: 2, title: "Coastal Light", year: 2024, details: "Acrylic on canvas, 24x36 in", price: "Sold", imageSeed: "coastal-light" },
+                { id: 3, title: "Azure Depths", year: 2023, details: "Acrylic on wood panel, 24×24 in", price: "From a private collection", imageSeed: "azure-depths" },
+                { id: 4, title: "Sun-Drenched Valley", year: 2023, details: "Oil on linen, 36x36 in", price: "Available - $3,800", imageSeed: "sun-drenched" },
+                { id: 5, title: "First Light on the Ridge", year: 2022, details: "Watercolor on paper, 18x24 in", price: "Available - $1,800", imageSeed: "first-light" },
+                { id: 6, title: "Crimson Field", year: 2022, details: "Mixed media, 30x30 in", price: "Sold", imageSeed: "crimson-field" }
+            ];
+
+            // --- DOM Element References ---
+            const sidebarNav = document.getElementById('sidebar-nav');
+            const mainImage = document.getElementById('main-artwork-img');
+            // New references for sidebar details
+            const sidebarTitleEl = document.getElementById('sidebar-artwork-title');
+            const sidebarDetailsEl = document.getElementById('sidebar-artwork-details');
+            const sidebarPriceEl = document.getElementById('sidebar-artwork-price');
+
+            // --- Function to update the main artwork display ---
+            function updateArtworkDisplay(artwork) {
+                // Update main image
+                mainImage.src = `https://picsum.photos/seed/${artwork.imageSeed}/1200/900`;
+                mainImage.alt = artwork.title;
+                
+                // Update sidebar details panel
+                sidebarTitleEl.textContent = artwork.title;
+                sidebarDetailsEl.textContent = artwork.details;
+                sidebarPriceEl.textContent = artwork.price;
+                
+                // Add classes to the status text for specific styling
+                sidebarPriceEl.className = ''; // Reset classes first
+                if (artwork.price.toLowerCase().includes('available')) {
+                    sidebarPriceEl.classList.add('status-available');
+                } else {
+                    sidebarPriceEl.classList.add('status-sold');
+                }
+                
+                // Update active link in sidebar navigation
+                document.querySelectorAll('.sidebar a').forEach(link => link.classList.remove('active'));
+                document.querySelector(`.sidebar a[data-id='${artwork.id}']`).classList.add('active');
+            }
+
+            // --- Build Sidebar Navigation ---
+            // 1. Group artworks by year
+            const artworksByYear = artworks.reduce((acc, art) => {
+                (acc[art.year] = acc[art.year] || []).push(art);
+                return acc;
+            }, {});
+
+            // 2. Get sorted years (most recent first)
+            const sortedYears = Object.keys(artworksByYear).sort((a, b) => b - a);
+            
+            // 3. Create HTML for the sidebar
+            sortedYears.forEach(year => {
+                const yearGroup = document.createElement('div');
+                yearGroup.className = 'year-group';
+                
+                const yearTitle = document.createElement('h3');
+                yearTitle.textContent = year;
+                yearGroup.appendChild(yearTitle);
+
+                const list = document.createElement('ul');
+                artworksByYear[year].forEach(art => {
+                    const listItem = document.createElement('li');
+                    const link = document.createElement('a');
+                    link.textContent = art.title;
+                    link.dataset.id = art.id; // Use a data attribute to store the artwork ID
+                    listItem.appendChild(link);
+                    list.appendChild(listItem);
+                });
+                yearGroup.appendChild(list);
+                sidebarNav.appendChild(yearGroup);
+            });
+            
+            // --- Add Event Listener to Sidebar ---
+            sidebarNav.addEventListener('click', function(event) {
+                // Use event delegation for efficiency
+                if (event.target.tagName === 'A' && event.target.dataset.id) {
+                    const artworkId = parseInt(event.target.dataset.id, 10);
+                    const selectedArtwork = artworks.find(art => art.id === artworkId);
+                    if (selectedArtwork) {
+                        updateArtworkDisplay(selectedArtwork);
+                    }
+                }
+            });
+
+            // --- Initialize with the first artwork on page load ---
+            if (artworks.length > 0) {
+                updateArtworkDisplay(artworks[0]);
+            }
+        });
+    </script>
+
+</body>
+</html>
+
