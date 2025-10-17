@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Title Fix - 10 Design Solutions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f5f5f5;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 3rem;
+            font-size: 1.125rem;
+        }
+
+        .designs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .design-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .design-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .design-header {
+            background: linear-gradient(135deg, #d4526e 0%, #b23e56 100%);
+            color: white;
+            padding: 1rem 1.25rem;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .design-preview {
+            position: relative;
+            height: 500px;
+            background: #fafafa;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .phone-mockup {
+            position: relative;
+            height: 100%;
+            border: 8px solid #1a1a1a;
+            border-radius: 24px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .artwork-area {
+            position: relative;
+            height: 100%;
+            background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            color: #999;
+        }
+
+        .artwork-placeholder {
+            width: 80%;
+            height: 60%;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .title-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.95) 100%);
+            backdrop-filter: blur(12px);
+            border-top: 2px solid #f5cbd4;
+            padding: 1rem;
+            z-index: 10;
+        }
+
+        .title-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin: 0 0 0.25rem;
+        }
+
+        .meta-text {
+            font-size: 0.75rem;
+            color: #666;
+            margin: 0;
+        }
+
+        .contact-section {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            border-top: 1px solid #ede0e3;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .social-icon {
+            width: 32px;
+            height: 32px;
+            background: #666;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.75rem;
+        }
+
+        .design-description {
+            padding: 1.25rem;
+        }
+
+        .pros-cons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .pro, .con {
+            font-size: 0.875rem;
+            line-height: 1.5;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .pro::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #059669;
+            font-weight: bold;
+        }
+
+        .con::before {
+            content: '✗';
+            position: absolute;
+            left: 0;
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .recommendation {
+            background: #fff3e0;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin-top: 2rem;
+            border-radius: 4px;
+        }
+
+        .recommendation strong {
+            color: #b45309;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Specific Design Styles */
+
+        /* Design 1: Increased Z-Index */
+        #design1 .title-overlay {
+            z-index: 100;
+        }
+
+        #design1 .contact-section {
+            z-index: 50;
+        }
+
+        /* Design 2: Add Bottom Padding */
+        #design2 .artwork-area {
+            padding-bottom: 180px;
+        }
+
+        /* Design 3: Floating Above */
+        #design3 .title-overlay {
+            bottom: 140px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Design 4: Sticky Top */
+        #design4 .title-overlay {
+            top: 0;
+            bottom: auto;
+            border-top: none;
+            border-bottom: 2px solid #f5cbd4;
+        }
+
+        /* Design 5: Compact Info */
+        #design5 .title-overlay {
+            padding: 0.75rem 1rem;
+        }
+
+        #design5 .title-text {
+            font-size: 0.95rem;
+        }
+
+        #design5 .meta-text {
+            font-size: 0.65rem;
+        }
+
+        /* Design 6: Side Panel */
+        #design6 .title-overlay {
+            left: auto;
+            right: 0;
+            width: 60%;
+            border-top: none;
+            border-left: 2px solid #f5cbd4;
+            border-radius: 8px 0 0 0;
+        }
+
+        /* Design 7: Collapsible */
+        #design7 .title-overlay {
+            padding: 0.5rem 1rem 0.75rem;
+        }
+
+        #design7 .toggle-btn {
+            position: absolute;
+            top: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border: 2px solid #f5cbd4;
+            border-radius: 20px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #d4526e;
+        }
+
+        /* Design 8: Scrollable Area */
+        #design8 .artwork-area {
+            overflow-y: auto;
+        }
+
+        /* Design 9: Modal Style */
+        #design9 .title-overlay {
+            bottom: 80px;
+            left: 10%;
+            right: 10%;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Design 10: No Contact Section */
+        #design10 .contact-section {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Mobile Title Cutoff - 10 Design Solutions</h1>
+        <p class="subtitle">Compare approaches to fix the bottom title overlap issue</p>
+
+        <div class="designs-grid">
+            <!-- Design 1: Increased Z-Index -->
+            <div class="design-card">
+                <div class="design-header">
+                    Design 1: Increased Z-Index
+                </div>
+                <div class="design-preview" id="design1">
+                    <div class="phone-mockup">
+                        <div class="artwork-area">
+                            <div class="artwork-placeholder">Artwork</div>
+                            <div class="title-overlay">
+                                <div class="title-text">Untitled (iteration 2)</div>
+                                <div class="meta-text">Acrylic on Loose Canvas, 2025</div>
+                            </div>
+                            <div class="contact-section">
+                                <div class="social-icons">
+                                    <div class="social-icon">IG</div>
+                                    <div class="social-icon">@</div>
+                                    <div class="social-icon">LI</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="design-description">
+                    <div class="pros-cons">
+                        <div class="pro">Title always visible above contact</div>
+                        <div class="pro">Minimal code change</div>
+                        <div class="con">May still overlap visually</div>
+                        <div class="con">Doesn't solve root layout issue</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Design 2: Add Bottom Padding -->
+            <div class="design-card">
+                <div class="design-header">
+                    Design 2: Bottom Padding
+                </div>
+                <div class="design-preview" id="design2">
+                    <div class="phone-mockup">
+                        <div class="artwork-area">
+                            <div class="artwork-placeholder">Artwork</div>
+                            <div class="title-overlay">
+                                <div class="title-text">Untitled (iteration 2)</div>
+                                <div class="meta-text">Acrylic on Loose Canvas, 2025</div>
+                            </div>
+                            <div class="contact-section">
+                                <div class="social-icons">
+                                    <div class="social-icon">IG</div>
+                                    <div class="social-icon">@</div>
+                                    <div class="social-icon">LI</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="design-description">
+                    <div class="pros-cons">
+                        <div class="pro">Pushes title up naturally</div>
+                        <div class="pro">No overlap issues</div>
+                        <div class="con">Artwork appears smaller</div>
+                        <div class="con">Wastes vertical space</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Design 3: Floating Above Contact -->
+            <div class="design-card">
+                <div class="design-header">
+                    Design 3: Floating Panel
+                </div>
+                <div class="design-preview" id="design3">
+                    <div class="phone-mockup">
+                        <div class="artwork-area">
+                            <div class="artwork-placeholder">Artwork</div>
+                            <div class="title-overlay">
+                                <div class="title-text">Untitled (iteration 2)</div>
+                                <div class="meta-text">Acrylic on Loose Canvas, 2025</div>
+                            </div>
+                            <div class="contact-section">
+                                <div class="social-icons">
+                                    <div class="social-icon">IG</div>
+                                    <div class="social-icon">@</div>
+                                    <div class="social-icon">LI</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="design-description">
+                    <div class="pros-cons">
+                        <div class="pro">Visually separated layers</div>
+                        <div class="pro">Clear hierarchy</div>
+                        <div class="con">Covers artwork more</div>
+                        <div class="con">May feel cluttered</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Design 4: Sticky Top -->
+            <div class="design-card">
+                <div class="design-header">
+                    Design 4: Title at Top
+                </div>
+                <div class="design-preview" id="design4">
+                    <div class="phone-mockup">
+                        <div class="artwork-area">
+                            <div class="title-overlay">
+                                <div class="title-text">Untitled (iteration 2)</div>
+                                <div class="meta-text">Acrylic on Loose Canvas, 2025</div>
+                            </div>
+                            <div class="artwork-placeholder">Artwork</div>
+                            <div class="contact-section">
+                                <div class="social-icons">
+                                    <div class="social-icon">IG</div>
+                                    <div class="social-icon">@</div>
+                                    <div class="social-icon">LI</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="design-description">
+                    <div class="pros-cons">
+                        <div class="pro">Always visible</div>
+                        <div class="pro">Traditional layout</div>
+                        <div class="con">Changes UX pattern</div>
+                        <div class="con">Less immersive</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Design 5: Compact Info Bar -->
+            <div class="design-card">
+                <div class="design-header">
+                    Design 5: Compact Info
+                </div>
+                <div class="design-preview" id="design5">
+                    <div class="phone-mockup">
+                        <div class="artwork-area">
+                            <div class="artwork-placeholder">Artwork</div>
+                            <div class="title-overlay">
+                                <div class="title-text">Untitled (iteration 2)</div>
+                                <div class="meta-text">Acrylic on Loose Canvas, 2025</div>
+                            </div>
+                            <div class="contact-section">
+                                <div class="social-icons">
+                                    <div class="social-icon">IG</div>
+                                    <div class="social-icon">@</div>
+                                    <div class="social-icon">LI</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="design-description">
+                    <div class="pros-cons">
+                        <div class="pro">Takes less vertical space</div>
+                        <div class="pro">Minimalist aesthetic</div>
+                        <div class="con">Harder to read</div>
+                        <div class="con">May feel cramped</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Design 6: Side Panel -->
+            <div class="design-card">
+                <div class="design-header">
+                    Design 6: Side Info Panel
+                </div>
+                <div class="design-preview" id="design6">
+                    <div class="phone-mockup">
+                        <div class="artwork-area">
+                            <div class="artwork-placeholder">Artwork</div>
+                            <div class="title-overlay">
+                                <div class="title-text">Untitled (iteration 2)</div>
+                                <div class="meta-text">Acrylic, 2025</div>
+                            </div>
+                            <div class="contact-section">
+                                <div class="social-icons">
+                                    <div class="social-icon">IG</div>
+                                    <div class="social-icon">@</div>
+                                    <div class="social-icon">LI</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="design-description">
+                    <div class="pros-cons">
+                        <div class="pro">Unique layout</div>
+                        <div class="pro">Doesn't block bottom</div>
+                        <div class="con">Unconventional</div>
+                        <div class="con">May feel unbalanced</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Design 7: Collapsible Panel -->
+            <div class="design-card">
+                <div class="design-header">
+                    Design 7: Collapsible
+                </div>
+                <div class="design-preview" id="design7">
+                    <div class="phone-mockup">
+                        <div class="artwork-area">
+                            <div class="artwork-placeholder">Artwork</div>
+                            <div class="title-overlay">
+                                <div class="toggle-btn">↑</div>
+                                <div class="title-text">Untitled (iteration 2)</div>
+                                <div class="meta-text">Acrylic on Loose Canvas, 2025</div>
+                            </div>
+                            <div class="contact-section">
+                                <div class="social-icons">
+                                    <div class="social-icon">IG</div>
+                                    <div class="social-icon">@</div>
+                                    <div class="social-icon">LI</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="design-description">
+                    <div class="pros-cons">
+                        <div class="pro">User controls visibility</div>
+                        <div class="pro">Maximizes artwork view</div>
+                        <div class="con">Requires interaction</div>
+                        <div class="con">Extra complexity</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Design 8: Scrollable Container -->
+            <div class="design-card">
+                <div class="design-header">
+                    Design 8: Scroll Container
+                </div>
+                <div class="design-preview" id="design8">
+                    <div class="phone-mockup">
+                        <div class="artwork-area">
+                            <div class="artwork-placeholder">Artwork</div>
+                            <div class="title-overlay">
+                                <div class="title-text">Untitled (iteration 2)</div>
+                                <div class="meta-text">Acrylic on Loose Canvas, 2025</div>
+                            </div>
+                            <div class="contact-section">
+                                <div class="social-icons">
+                                    <div class="social-icon">IG</div>
+                                    <div class="social-icon">@</div>
+                                    <div class="social-icon">LI</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="design-description">
+                    <div class="pros-cons">
+                        <div class="pro">All content accessible</div>
+                        <div class="pro">Flexible layout</div>
+                        <div class="con">May not feel native</div>
+                        <div class="con">Scrolling confusion</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Design 9: Modal/Card Style -->
+            <div class="design-card">
+                <div class="design-header">
+                    Design 9: Floating Card
+                </div>
+                <div class="design-preview" id="design9">
+                    <div class="phone-mockup">
+                        <div class="artwork-area">
+                            <div class="artwork-placeholder">Artwork</div>
+                            <div class="title-overlay">
+                                <div class="title-text">Untitled (iteration 2)</div>
+                                <div class="meta-text">Acrylic on Loose Canvas, 2025</div>
+                            </div>
+                            <div class="contact-section">
+                                <div class="social-icons">
+                                    <div class="social-icon">IG</div>
+                                    <div class="social-icon">@</div>
+                                    <div class="social-icon">LI</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="design-description">
+                    <div class="pros-cons">
+                        <div class="pro">Modern card UI</div>
+                        <div class="pro">Clearly separated</div>
+                        <div class="con">Covers more artwork</div>
+                        <div class="con">Unusual placement</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Design 10: Remove Contact Section -->
+            <div class="design-card">
+                <div class="design-header">
+                    Design 10: No Contact Section
+                </div>
+                <div class="design-preview" id="design10">
+                    <div class="phone-mockup">
+                        <div class="artwork-area">
+                            <div class="artwork-placeholder">Artwork</div>
+                            <div class="title-overlay">
+                                <div class="title-text">Untitled (iteration 2)</div>
+                                <div class="meta-text">Acrylic on Loose Canvas, 2025</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="design-description">
+                    <div class="pros-cons">
+                        <div class="pro">No overlap issues</div>
+                        <div class="pro">Clean, simple</div>
+                        <div class="pro">Most vertical space</div>
+                        <div class="con">Loses social links</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="recommendation">
+            <strong>Recommended Solution: Design 10 (No Contact Section)</strong>
+            <p>The cleanest fix is to remove or relocate the contact section from the mobile artwork view. The social links can be accessed via the About page. This solves the overlap completely while maintaining the immersive artwork viewing experience.</p>
+            <p style="margin-top: 0.75rem;"><strong>Alternative:</strong> Design 7 (Collapsible) if you want to keep the contact section but give users control over when they see it.</p>
+        </div>
+    </div>
+</body>
+</html>

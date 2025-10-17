@@ -7,16 +7,16 @@ export default function ContactPage() {
 
       <section className="contact-section" aria-labelledby="contact-heading">
         <a
-          href="mailto:contact@anjelinavillalobos.com"
+          href="mailto:linahouston9@gmail.com"
           className="email-link"
           aria-label="Email Anjelina Villalobos"
         >
-          contact@anjelinavillalobos.com
+          linahouston9@gmail.com
         </a>
 
         <nav className="social-links" aria-label="Social media links">
           <a
-            href="https://instagram.com"
+            href="https://www.instagram.com/anjelhelix/"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Follow on Instagram"
@@ -31,7 +31,7 @@ export default function ContactPage() {
           </a>
 
           <a
-            href="mailto:contact@anjelinavillalobos.com"
+            href="mailto:linahouston9@gmail.com"
             aria-label="Email Anjelina Villalobos"
             className="social-icon"
           >

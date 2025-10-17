@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar Navigation Redesign - Options A & B</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f5f5;
+            padding: 2rem 1rem;
+            color: #1a1a1a;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            text-align: center;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 3rem;
+            font-size: 1.125rem;
+        }
+
+        .demos-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 1200px) {
+            .demos-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .demo-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .demo-header {
+            background: linear-gradient(135deg, #d4526e 0%, #b23e56 100%);
+            color: white;
+            padding: 1.5rem;
+        }
+
+        .demo-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-description {
+            font-size: 0.95rem;
+            opacity: 0.95;
+            line-height: 1.5;
+        }
+
+        .demo-preview {
+            display: flex;
+            height: 700px;
+            background: #fef7f8;
+        }
+
+        /* Option A: Thumbnail Grid Sidebar */
+        .sidebar-grid {
+            width: 360px;
+            background: white;
+            border-right: 2px solid #f5cbd4;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem 1.25rem;
+            border-bottom: 2px solid #f5cbd4;
+            background: #fef0f3;
+        }
+
+        .sidebar-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: #d4526e;
+            margin-bottom: 0.5rem;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .toggle-btn {
+            padding: 0.4rem 0.9rem;
+            border: 1px solid #f5cbd4;
+            background: white;
+            color: #666;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .toggle-btn.active {
+            background: #d4526e;
+            color: white;
+            border-color: #d4526e;
+        }
+
+        .toggle-btn:hover:not(.active) {
+            background: #fef0f3;
+            border-color: #d4526e;
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem 1.25rem;
+        }
+
+        .year-section {
+            margin-bottom: 2rem;
+        }
+
+        .year-header {
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #d4526e;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #f5cbd4;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .artwork-count {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            font-weight: 500;
+        }
+
+        /* Grid View */
+        .artwork-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+        }
+
+        .artwork-grid-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 6px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .artwork-grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .artwork-grid-item:hover {
+            border-color: #d4526e;
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(212, 82, 110, 0.3);
+            z-index: 10;
+        }
+
+        .artwork-grid-item.active {
+            border-color: #d4526e;
+            box-shadow: 0 0 0 3px rgba(212, 82, 110, 0.2);
+        }
+
+        .artwork-title-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+            color: white;
+            padding: 0.5rem 0.4rem 0.3rem;
+            font-size: 0.65rem;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            line-height: 1.2;
+        }
+
+        .artwork-grid-item:hover .artwork-title-overlay {
+            opacity: 1;
+        }
+
+        /* List View */
+        .artwork-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .artwork-list-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .artwork-list-item:hover {
+            background: #fef0f3;
+            border-color: #f5cbd4;
+        }
+
+        .artwork-list-item.active {
+            background: #fef0f3;
+            border-color: #d4526e;
+        }
+
+        .artwork-list-thumb {
+            width: 50px;
+            height: 50px;
+            border-radius: 4px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .artwork-list-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .artwork-list-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.2rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .artwork-list-meta {
+            font-size: 0.75rem;
+            color: #666;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .artwork-display {
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .artwork-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            margin-bottom: 1.5rem;
+        }
+
+        .artwork-info {
+            text-align: center;
+        }
+
+        .artwork-year {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            color: #d4526e;
+            opacity: 0.7;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .artwork-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .artwork-medium {
+            font-size: 0.95rem;
+            color: #666;
+        }
+
+        /* Option B: Timeline Sidebar */
+        .sidebar-timeline {
+            width: 360px;
+            background: white;
+            border-right: 2px solid #f5cbd4;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timeline-container {
+            flex: 1;
+            overflow-y: auto;
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 2rem;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #f5cbd4 0%, #d4526e 50%, #f5cbd4 100%);
+        }
+
+        .timeline-year-group {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-year-marker {
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 20;
+            padding: 0.75rem 1rem 0.75rem 4rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #f5cbd4;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .timeline-year-label {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: #d4526e;
+            font-weight: 700;
+        }
+
+        .timeline-year-count {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.2rem;
+        }
+
+        .timeline-artworks {
+            padding-left: 4rem;
+            padding-right: 1rem;
+        }
+
+        .timeline-artwork-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+        }
+
+        .timeline-artwork-item::before {
+            content: '';
+            position: absolute;
+            left: -3.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: white;
+            border: 3px solid #f5cbd4;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-artwork-item:hover {
+            background: #fef0f3;
+            transform: translateX(4px);
+        }
+
+        .timeline-artwork-item:hover::before {
+            background: #d4526e;
+            border-color: #d4526e;
+            transform: translateY(-50%) scale(1.3);
+        }
+
+        .timeline-artwork-item.active {
+            background: #fef0f3;
+            border-color: #d4526e;
+            transform: translateX(8px);
+        }
+
+        .timeline-artwork-item.active::before {
+            background: #d4526e;
+            border-color: #d4526e;
+            transform: translateY(-50%) scale(1.5);
+            box-shadow: 0 0 0 4px rgba(212, 82, 110, 0.2);
+        }
+
+        .timeline-artwork-thumb {
+            width: 70px;
+            height: 70px;
+            border-radius: 6px;
+            object-fit: cover;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .timeline-artwork-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .timeline-artwork-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.3rem;
+            line-height: 1.3;
+        }
+
+        .timeline-artwork-meta {
+            font-size: 0.8rem;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        /* Scrollbar Styling */
+        .sidebar-content::-webkit-scrollbar,
+        .timeline-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .sidebar-content::-webkit-scrollbar-track,
+        .timeline-container::-webkit-scrollbar-track {
+            background: #fef7f8;
+        }
+
+        .sidebar-content::-webkit-scrollbar-thumb,
+        .timeline-container::-webkit-scrollbar-thumb {
+            background: #f5cbd4;
+            border-radius: 4px;
+        }
+
+        .sidebar-content::-webkit-scrollbar-thumb:hover,
+        .timeline-container::-webkit-scrollbar-thumb:hover {
+            background: #d4526e;
+        }
+
+        /* Comparison Section */
+        .comparison {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .comparison h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            color: #d4526e;
+            margin-bottom: 1.5rem;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .comparison-item h3 {
+            font-size: 1.125rem;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .pros-cons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .pro, .con {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            padding-left: 1.75rem;
+            position: relative;
+        }
+
+        .pro::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #059669;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .con::before {
+            content: '✗';
+            position: absolute;
+            left: 0;
+            color: #dc2626;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .score {
+            margin-top: 1rem;
+            padding: 0.75rem 1rem;
+            background: #fef0f3;
+            border-left: 4px solid #d4526e;
+            border-radius: 4px;
+            font-weight: 600;
+            color: #d4526e;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sidebar Navigation Redesign</h1>
+        <p class="subtitle">Two approaches that actually respect the fact this is a visual art portfolio</p>
+
+        <div class="demos-container">
+            <!-- Option A: Thumbnail Grid -->
+            <div class="demo-card">
+                <div class="demo-header">
+                    <h2 class="demo-title">Option A: Thumbnail Grid</h2>
+                    <p class="demo-description">Visual navigation with grid/list toggle. Recognize artworks at a glance without needing to read titles.</p>
+                </div>
+                <div class="demo-preview">
+                    <aside class="sidebar-grid">
+                        <div class="sidebar-header">
+                            <h2>Artworks</h2>
+                            <div class="view-toggle">
+                                <button class="toggle-btn active" onclick="switchView('grid')">Grid</button>
+                                <button class="toggle-btn" onclick="switchView('list')">List</button>
+                            </div>
+                        </div>
+                        <div class="sidebar-content" id="sidebarContent">
+                            <!-- 2025 -->
+                            <div class="year-section">
+                                <div class="year-header">
+                                    <span>2025</span>
+                                    <span class="artwork-count">5 works</span>
+                                </div>
+                                <div class="artwork-grid" id="grid2025">
+                                    <div class="artwork-grid-item active" onclick="selectArtwork(this, 'grid')">
+                                        <img src="https://via.placeholder.com/100/e8d5c4/1a1a1a?text=1" alt="Artwork 1">
+                                        <div class="artwork-title-overlay">Untitled (iteration 2)</div>
+                                    </div>
+                                    <div class="artwork-grid-item" onclick="selectArtwork(this, 'grid')">
+                                        <img src="https://via.placeholder.com/100/c4d5e8/1a1a1a?text=2" alt="Artwork 2">
+                                        <div class="artwork-title-overlay">Morning Light</div>
+                                    </div>
+                                    <div class="artwork-grid-item" onclick="selectArtwork(this, 'grid')">
+                                        <img src="https://via.placeholder.com/100/e8c4d5/1a1a1a?text=3" alt="Artwork 3">
+                                        <div class="artwork-title-overlay">Abstract Study #7</div>
+                                    </div>
+                                    <div class="artwork-grid-item" onclick="selectArtwork(this, 'grid')">
+                                        <img src="https://via.placeholder.com/100/d5e8c4/1a1a1a?text=4" alt="Artwork 4">
+                                        <div class="artwork-title-overlay">Reflection</div>
+                                    </div>
+                                    <div class="artwork-grid-item" onclick="selectArtwork(this, 'grid')">
+                                        <img src="https://via.placeholder.com/100/e8e8c4/1a1a1a?text=5" alt="Artwork 5">
+                                        <div class="artwork-title-overlay">Composition in Blue</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 2024 -->
+                            <div class="year-section">
+                                <div class="year-header">
+                                    <span>2024</span>
+                                    <span class="artwork-count">4 works</span>
+                                </div>
+                                <div class="artwork-grid">
+                                    <div class="artwork-grid-item" onclick="selectArtwork(this, 'grid')">
+                                        <img src="https://via.placeholder.com/100/c4e8e8/1a1a1a?text=6" alt="Artwork 6">
+                                        <div class="artwork-title-overlay">Sunset Series I</div>
+                                    </div>
+                                    <div class="artwork-grid-item" onclick="selectArtwork(this, 'grid')">
+                                        <img src="https://via.placeholder.com/100/e8c4c4/1a1a1a?text=7" alt="Artwork 7">
+                                        <div class="artwork-title-overlay">Urban Landscape</div>
+                                    </div>
+                                    <div class="artwork-grid-item" onclick="selectArtwork(this, 'grid')">
+                                        <img src="https://via.placeholder.com/100/c4c4e8/1a1a1a?text=8" alt="Artwork 8">
+                                        <div class="artwork-title-overlay">Fragment #3</div>
+                                    </div>
+                                    <div class="artwork-grid-item" onclick="selectArtwork(this, 'grid')">
+                                        <img src="https://via.placeholder.com/100/d5c4e8/1a1a1a?text=9" alt="Artwork 9">
+                                        <div class="artwork-title-overlay">Still Life Study</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 2023 -->
+                            <div class="year-section">
+                                <div class="year-header">
+                                    <span>2023</span>
+                                    <span class="artwork-count">3 works</span>
+                                </div>
+                                <div class="artwork-grid">
+                                    <div class="artwork-grid-item" onclick="selectArtwork(this, 'grid')">
+                                        <img src="https://via.placeholder.com/100/e8d5d5/1a1a1a?text=10" alt="Artwork 10">
+                                        <div class="artwork-title-overlay">Memory Trace</div>
+                                    </div>
+                                    <div class="artwork-grid-item" onclick="selectArtwork(this, 'grid')">
+                                        <img src="https://via.placeholder.com/100/d5e8d5/1a1a1a?text=11" alt="Artwork 11">
+                                        <div class="artwork-title-overlay">Spring Awakening</div>
+                                    </div>
+                                    <div class="artwork-grid-item" onclick="selectArtwork(this, 'grid')">
+                                        <img src="https://via.placeholder.com/100/d5d5e8/1a1a1a?text=12" alt="Artwork 12">
+                                        <div class="artwork-title-overlay">Nocturne</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                    <div class="main-content">
+                        <div class="artwork-display">
+                            <img src="https://via.placeholder.com/600x400/e8d5c4/1a1a1a?text=Current+Artwork" alt="Current Artwork" class="artwork-image">
+                            <div class="artwork-info">
+                                <div class="artwork-year">2025</div>
+                                <h3 class="artwork-name">Untitled (iteration 2)</h3>
+                                <p class="artwork-medium">Acrylic on Loose Canvas, 24 × 30 inches</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Option B: Timeline -->
+            <div class="demo-card">
+                <div class="demo-header">
+                    <h2 class="demo-title">Option B: Vertical Timeline</h2>
+                    <p class="demo-description">Chronological journey through the collection with sticky year markers and visual progression indicators.</p>
+                </div>
+                <div class="demo-preview">
+                    <aside class="sidebar-timeline">
+                        <div class="timeline-container">
+                            <div class="timeline-line"></div>
+
+                            <!-- 2025 -->
+                            <div class="timeline-year-group">
+                                <div class="timeline-year-marker">
+                                    <div class="timeline-year-label">2025</div>
+                                    <div class="timeline-year-count">5 artworks</div>
+                                </div>
+                                <div class="timeline-artworks">
+                                    <div class="timeline-artwork-item active" onclick="selectArtwork(this, 'timeline')">
+                                        <img src="https://via.placeholder.com/70/e8d5c4/1a1a1a?text=1" alt="Artwork" class="timeline-artwork-thumb">
+                                        <div class="timeline-artwork-info">
+                                            <div class="timeline-artwork-title">Untitled (iteration 2)</div>
+                                            <div class="timeline-artwork-meta">Acrylic on Canvas</div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-artwork-item" onclick="selectArtwork(this, 'timeline')">
+                                        <img src="https://via.placeholder.com/70/c4d5e8/1a1a1a?text=2" alt="Artwork" class="timeline-artwork-thumb">
+                                        <div class="timeline-artwork-info">
+                                            <div class="timeline-artwork-title">Morning Light</div>
+                                            <div class="timeline-artwork-meta">Oil on Canvas</div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-artwork-item" onclick="selectArtwork(this, 'timeline')">
+                                        <img src="https://via.placeholder.com/70/e8c4d5/1a1a1a?text=3" alt="Artwork" class="timeline-artwork-thumb">
+                                        <div class="timeline-artwork-info">
+                                            <div class="timeline-artwork-title">Abstract Study #7</div>
+                                            <div class="timeline-artwork-meta">Mixed Media</div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-artwork-item" onclick="selectArtwork(this, 'timeline')">
+                                        <img src="https://via.placeholder.com/70/d5e8c4/1a1a1a?text=4" alt="Artwork" class="timeline-artwork-thumb">
+                                        <div class="timeline-artwork-info">
+                                            <div class="timeline-artwork-title">Reflection</div>
+                                            <div class="timeline-artwork-meta">Acrylic on Paper</div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-artwork-item" onclick="selectArtwork(this, 'timeline')">
+                                        <img src="https://via.placeholder.com/70/e8e8c4/1a1a1a?text=5" alt="Artwork" class="timeline-artwork-thumb">
+                                        <div class="timeline-artwork-info">
+                                            <div class="timeline-artwork-title">Composition in Blue</div>
+                                            <div class="timeline-artwork-meta">Watercolor</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 2024 -->
+                            <div class="timeline-year-group">
+                                <div class="timeline-year-marker">
+                                    <div class="timeline-year-label">2024</div>
+                                    <div class="timeline-year-count">4 artworks</div>
+                                </div>
+                                <div class="timeline-artworks">
+                                    <div class="timeline-artwork-item" onclick="selectArtwork(this, 'timeline')">
+                                        <img src="https://via.placeholder.com/70/c4e8e8/1a1a1a?text=6" alt="Artwork" class="timeline-artwork-thumb">
+                                        <div class="timeline-artwork-info">
+                                            <div class="timeline-artwork-title">Sunset Series I</div>
+                                            <div class="timeline-artwork-meta">Oil on Canvas</div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-artwork-item" onclick="selectArtwork(this, 'timeline')">
+                                        <img src="https://via.placeholder.com/70/e8c4c4/1a1a1a?text=7" alt="Artwork" class="timeline-artwork-thumb">
+                                        <div class="timeline-artwork-info">
+                                            <div class="timeline-artwork-title">Urban Landscape</div>
+                                            <div class="timeline-artwork-meta">Acrylic on Wood</div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-artwork-item" onclick="selectArtwork(this, 'timeline')">
+                                        <img src="https://via.placeholder.com/70/c4c4e8/1a1a1a?text=8" alt="Artwork" class="timeline-artwork-thumb">
+                                        <div class="timeline-artwork-info">
+                                            <div class="timeline-artwork-title">Fragment #3</div>
+                                            <div class="timeline-artwork-meta">Mixed Media</div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-artwork-item" onclick="selectArtwork(this, 'timeline')">
+                                        <img src="https://via.placeholder.com/70/d5c4e8/1a1a1a?text=9" alt="Artwork" class="timeline-artwork-thumb">
+                                        <div class="timeline-artwork-info">
+                                            <div class="timeline-artwork-title">Still Life Study</div>
+                                            <div class="timeline-artwork-meta">Oil on Canvas</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 2023 -->
+                            <div class="timeline-year-group">
+                                <div class="timeline-year-marker">
+                                    <div class="timeline-year-label">2023</div>
+                                    <div class="timeline-year-count">3 artworks</div>
+                                </div>
+                                <div class="timeline-artworks">
+                                    <div class="timeline-artwork-item" onclick="selectArtwork(this, 'timeline')">
+                                        <img src="https://via.placeholder.com/70/e8d5d5/1a1a1a?text=10" alt="Artwork" class="timeline-artwork-thumb">
+                                        <div class="timeline-artwork-info">
+                                            <div class="timeline-artwork-title">Memory Trace</div>
+                                            <div class="timeline-artwork-meta">Charcoal on Paper</div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-artwork-item" onclick="selectArtwork(this, 'timeline')">
+                                        <img src="https://via.placeholder.com/70/d5e8d5/1a1a1a?text=11" alt="Artwork" class="timeline-artwork-thumb">
+                                        <div class="timeline-artwork-info">
+                                            <div class="timeline-artwork-title">Spring Awakening</div>
+                                            <div class="timeline-artwork-meta">Acrylic on Canvas</div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-artwork-item" onclick="selectArtwork(this, 'timeline')">
+                                        <img src="https://via.placeholder.com/70/d5d5e8/1a1a1a?text=12" alt="Artwork" class="timeline-artwork-thumb">
+                                        <div class="timeline-artwork-info">
+                                            <div class="timeline-artwork-title">Nocturne</div>
+                                            <div class="timeline-artwork-meta">Oil on Canvas</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                    <div class="main-content">
+                        <div class="artwork-display">
+                            <img src="https://via.placeholder.com/600x400/e8d5c4/1a1a1a?text=Current+Artwork" alt="Current Artwork" class="artwork-image">
+                            <div class="artwork-info">
+                                <div class="artwork-year">2025</div>
+                                <h3 class="artwork-name">Untitled (iteration 2)</h3>
+                                <p class="artwork-medium">Acrylic on Loose Canvas, 24 × 30 inches</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison -->
+        <div class="comparison">
+            <h2>Design Evaluation</h2>
+            <div class="comparison-grid">
+                <div class="comparison-item">
+                    <h3>Option A: Thumbnail Grid</h3>
+                    <div class="pros-cons">
+                        <div class="pro">Visual recognition - see artworks at a glance</div>
+                        <div class="pro">Flexible view options (grid/list toggle)</div>
+                        <div class="pro">Compact - fits more artworks visible at once</div>
+                        <div class="pro">Clean, modern gallery aesthetic</div>
+                        <div class="pro">Artwork counts provide context</div>
+                        <div class="con">Grid may feel cramped on narrow screens</div>
+                        <div class="con">Requires good quality thumbnails</div>
+                    </div>
+                    <div class="score">Design Score: 8/10 - Practical & Elegant</div>
+                </div>
+
+                <div class="comparison-item">
+                    <h3>Option B: Vertical Timeline</h3>
+                    <div class="pros-cons">
+                        <div class="pro">Tells a chronological story</div>
+                        <div class="pro">Sticky year headers keep context visible</div>
+                        <div class="pro">Larger thumbnails = better detail</div>
+                        <div class="pro">Smooth scrolling experience</div>
+                        <div class="pro">Unique, memorable design</div>
+                        <div class="con">Takes more vertical space per artwork</div>
+                        <div class="con">More scrolling required</div>
+                    </div>
+                    <div class="score">Design Score: 9/10 - Elegant & Story-Driven</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectArtwork(element, type) {
+            // Remove active class from siblings
+            const container = element.closest(type === 'grid' ? '.artwork-grid' : '.timeline-artworks');
+            if (container) {
+                const items = container.querySelectorAll(type === 'grid' ? '.artwork-grid-item' : '.timeline-artwork-item');
+                items.forEach(item => item.classList.remove('active'));
+            }
+
+            // Add active class to clicked element
+            element.classList.add('active');
+        }
+
+        function switchView(view) {
+            // Update toggle buttons
+            const buttons = document.querySelectorAll('.toggle-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Switch between grid and list view
+            const sidebarContent = document.getElementById('sidebarContent');
+            const yearSections = sidebarContent.querySelectorAll('.year-section');
+
+            yearSections.forEach(section => {
+                const yearHeader = section.querySelector('.year-header');
+                const gridContainer = section.querySelector('.artwork-grid');
+
+                if (view === 'list') {
+                    // Create list view
+                    const artworks = [
+                        { title: 'Untitled (iteration 2)', medium: 'Acrylic on Loose Canvas', img: 'https://via.placeholder.com/50/e8d5c4/1a1a1a?text=1', active: true },
+                        { title: 'Morning Light', medium: 'Oil on Canvas', img: 'https://via.placeholder.com/50/c4d5e8/1a1a1a?text=2' },
+                        { title: 'Abstract Study #7', medium: 'Mixed Media', img: 'https://via.placeholder.com/50/e8c4d5/1a1a1a?text=3' },
+                        { title: 'Reflection', medium: 'Acrylic on Paper', img: 'https://via.placeholder.com/50/d5e8c4/1a1a1a?text=4' },
+                        { title: 'Composition in Blue', medium: 'Watercolor', img: 'https://via.placeholder.com/50/e8e8c4/1a1a1a?text=5' }
+                    ];
+
+                    const listHTML = `
+                        <div class="artwork-list">
+                            ${artworks.map(art => `
+                                <div class="artwork-list-item ${art.active ? 'active' : ''}" onclick="selectArtwork(this, 'list')">
+                                    <img src="${art.img}" alt="${art.title}" class="artwork-list-thumb">
+                                    <div class="artwork-list-info">
+                                        <div class="artwork-list-title">${art.title}</div>
+                                        <div class="artwork-list-meta">${art.medium}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+
+                    if (gridContainer) {
+                        gridContainer.outerHTML = listHTML;
+                    }
+                } else {
+                    // Back to grid view (reload page for demo simplicity)
+                    location.reload();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

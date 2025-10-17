@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "deploy": "next build && touch out/.nojekyll && cd out && git add -A && git commit -m 'Deploy to GitHub Pages' && git push origin gh-pages"
+    "deploy": "next build && touch out/.nojekyll && cd out && git init && git checkout -b gh-pages && git add -A && git commit -m 'Deploy to GitHub Pages' && git remote add origin https://github.com/japper2277/portfolio-demos.git && git push -f origin gh-pages"
   },
   "dependencies": {
     "@sanity/client": "6.12.0",

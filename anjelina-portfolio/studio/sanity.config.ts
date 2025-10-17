@@ -7,7 +7,7 @@ export default defineConfig({
   name: 'default',
   title: 'Anjelina Portfolio',
 
-  projectId: 'YOUR_PROJECT_ID',
+  projectId: '9kd9rg15',
   dataset: 'production',
 
   plugins: [structureTool(), visionTool()],

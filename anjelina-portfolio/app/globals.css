@@ -35,6 +35,7 @@
   --transition-fast: 0.2s ease;
   --transition-base: 0.3s ease;
   --transition-slow: 0.5s ease;
+  --ease-anticipatory: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ===================================
@@ -158,10 +159,88 @@ html, body {
   overflow-y: auto;
 }
 
+/* Year Filter Buttons */
+.sidebar-year-filters {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0 0 1rem 0;
+  border-bottom: 2px solid var(--accent-light);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.year-filter-btn {
+  all: unset;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--secondary-text);
+  background: transparent;
+  border-radius: 20px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid transparent;
+  box-sizing: border-box;
+}
+
+.year-filter-btn:hover {
+  background: var(--highlight-color);
+  color: var(--accent-dark);
+  border-color: var(--accent-light);
+}
+
+.year-filter-btn.active {
+  background: var(--accent-color);
+  color: white;
+  font-weight: 600;
+  border-color: var(--accent-color);
+  box-shadow: 0 2px 8px rgba(212, 82, 110, 0.2);
+}
+
+.year-filter-btn:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
 /* Year-grouped navigation */
 .sidebar-nav-scrollable {
   overflow-y: auto;
   flex-grow: 1;
+  scroll-behavior: smooth;
+
+  /* Firefox - thin scrollbar, auto-hide */
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+/* Show scrollbar on hover (Firefox) */
+.sidebar-nav-scrollable:hover {
+  scrollbar-color: rgba(212, 82, 110, 0.3) transparent;
+}
+
+/* WebKit browsers (Chrome, Safari, Edge) - auto-hide scrollbar */
+.sidebar-nav-scrollable::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-nav-scrollable::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-nav-scrollable::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+
+/* Show scrollbar on hover (WebKit) */
+.sidebar-nav-scrollable:hover::-webkit-scrollbar-thumb {
+  background: rgba(212, 82, 110, 0.3);
+}
+
+.sidebar-nav-scrollable:hover::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 82, 110, 0.5);
 }
 
 .sidebar .year-group h3 {
@@ -187,7 +266,9 @@ html, body {
 }
 
 .sidebar ul li a {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
   padding: 10px 12px;
   text-decoration: none;
   color: var(--text-color);
@@ -198,6 +279,15 @@ html, body {
   border-radius: 4px;
   border-left: 3px solid transparent;
   margin: 0 -12px;
+}
+
+.sidebar ul li a .artwork-title {
+  display: block;
+  line-height: 1.3;
+}
+
+.sidebar ul li a .artwork-medium-preview {
+  display: none;
 }
 
 .sidebar ul li a:hover {
@@ -213,6 +303,10 @@ html, body {
   background: var(--highlight-color);
   border-left-color: var(--accent-color);
   padding-left: 16px;
+}
+
+.sidebar ul li a.active .artwork-title {
+  font-weight: 600;
 }
 
 /* Sidebar Details Panel */
@@ -336,12 +430,56 @@ html, body {
 
 .artwork-wrapper {
   height: calc(100vh - 77px);
-  padding: 0 2rem 2rem 0;
+  padding: 0;
 }
 
 .artwork-display {
   width: 100%;
   height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Dual-layer background system for crossfade transitions */
+.background-image-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.bg-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1.0s var(--ease-anticipatory);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #fafafa;
+}
+
+.bg-image.visible {
+  opacity: 1;
+}
+
+/* Ken Burns effect - subtle zoom and pan */
+@keyframes kenburns {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.05) translate(-1%, 1%);
+  }
+}
+
+/* Ken Burns animation - desktop only */
+@media (min-width: 769px) {
+  .bg-image.visible.animated {
+    animation: kenburns 45s infinite alternate ease-in-out;
+  }
 }
 
 .artwork-display img {
@@ -1487,8 +1625,9 @@ html, body {
   }
 
   .minimal-header {
-    padding: 1.5rem 1.5rem 0;
-    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    border-bottom: none;
   }
 
   .year-filter-bar {
@@ -1508,7 +1647,7 @@ html, body {
   }
 
   .artist-name {
-    font-size: 1.15rem; /* Increased from 1rem */
+    font-size: 1rem;
   }
 
   .main-nav {
@@ -1516,10 +1655,11 @@ html, body {
   }
 
   .main-nav a {
-    padding: 0.5rem 0.75rem;
-    min-height: 48px;
+    padding: 0.4rem 0.6rem;
+    min-height: 40px;
     display: flex;
     align-items: center;
+    font-size: 0.85rem;
   }
 
   .main-viewer {
@@ -1527,9 +1667,11 @@ html, body {
   }
 
   .viewer-nav {
-    width: 56px; /* Increased to 56px for better touch */
-    height: 56px; /* Increased to 56px for better touch */
-    font-size: 1.8rem;
+    width: 64px; /* Increased to 64px for optimal touch */
+    height: 64px; /* Increased to 64px for optimal touch */
+    font-size: 2rem;
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
   }
 
   .artwork-info {
@@ -1670,9 +1812,9 @@ html, body {
 
   /* Artwork wrapper - optimize for mobile viewport */
   .artwork-wrapper {
-    height: auto;
+    height: 100dvh; /* Dynamic viewport height - adjusts for browser chrome */
     min-height: 50vh;
-    padding: 1rem;
+    padding: 0; /* Remove padding for full-bleed artwork */
   }
 
   /* Main content full width on mobile */
@@ -1839,13 +1981,6 @@ html, body {
   border: 2px solid transparent;
 }
 
-.about-social-link:first-child {
-  background: white;
-  border-color: var(--accent-color);
-  color: var(--text-color);
-  font-weight: 600;
-}
-
 .about-social-link svg {
   width: 1.25rem;
   height: 1.25rem;
@@ -1855,16 +1990,6 @@ html, body {
 .about-social-link:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(212, 82, 110, 0.2);
-}
-
-.about-social-link:first-child:hover {
-  background: var(--accent-color);
-  color: white;
-  border-color: var(--accent-color);
-  box-shadow: 0 6px 16px rgba(212, 82, 110, 0.3);
-}
-
-.about-social-link:not(:first-child):hover {
   background: var(--highlight-color);
 }
 
@@ -2038,7 +2163,7 @@ html, body {
    =================================== */
 .contact-section-light {
   background: var(--content-bg);
-  padding: 6rem 2rem;
+  padding: 2rem 1.5rem;
   text-align: center;
   border-top: 1px solid var(--border-color);
 }
@@ -2146,7 +2271,7 @@ html, body {
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .contact-section-light {
-    padding: 4rem 1.5rem;
+    padding: 1rem 0.75rem;
   }
 
   .contact-heading {
@@ -2250,6 +2375,40 @@ html, body {
   flex: 1;
   overflow-y: auto;
   padding: 1rem 0;
+  scroll-behavior: smooth;
+
+  /* Firefox - thin scrollbar, auto-hide */
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+/* Show scrollbar on hover (Firefox) */
+.mobile-nav-content:hover {
+  scrollbar-color: rgba(212, 82, 110, 0.3) transparent;
+}
+
+/* WebKit browsers (Chrome, Safari, Edge) - auto-hide scrollbar */
+.mobile-nav-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.mobile-nav-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.mobile-nav-content::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+
+/* Show scrollbar on hover (WebKit) */
+.mobile-nav-content:hover::-webkit-scrollbar-thumb {
+  background: rgba(212, 82, 110, 0.3);
+}
+
+.mobile-nav-content:hover::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 82, 110, 0.5);
 }
 
 .mobile-nav-year-group {
@@ -2312,9 +2471,116 @@ html, body {
 }
 
 .mobile-nav-item-medium {
-  font-size: 0.875rem;
+  display: none; /* Hidden on mobile for cleaner look */
+}
+
+/* Mobile Nav Year Filter Buttons */
+.mobile-nav-year-filters {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 2px solid var(--accent-light);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  background: var(--highlight-color);
+}
+
+/* Mobile Nav Scroll Progress Indicator */
+.mobile-nav-scroll-progress {
+  height: 3px;
+  width: 100%;
+  background: var(--border-color);
+  flex-shrink: 0;
+}
+
+.mobile-nav-scroll-progress-bar {
+  height: 100%;
+  background: var(--accent-color);
+  transition: width 0.2s ease;
+}
+
+/* Mobile Nav Details Panel */
+.mobile-nav-details {
+  margin-top: auto;
+  padding: 1.25rem 1.5rem;
+  border-top: 2px solid var(--accent-light);
+  background: var(--highlight-color);
+  flex-shrink: 0;
+}
+
+.mobile-nav-details h4 {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: var(--accent-color);
+  line-height: 1.3;
+}
+
+.mobile-nav-details p {
+  margin: 0 0 1rem;
+  line-height: 1.6;
   color: var(--secondary-text);
-  line-height: 1.4;
+  font-size: 0.95rem;
+}
+
+/* Mobile Nav Navigation Buttons */
+.mobile-nav-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 1rem;
+}
+
+.mobile-nav-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 48px;
+}
+
+.mobile-nav-btn:hover {
+  background: white;
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.mobile-nav-btn:active {
+  transform: scale(0.98);
+}
+
+.mobile-nav-btn .nav-arrow {
+  font-size: 1rem;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.mobile-nav-btn.prev:hover .nav-arrow {
+  transform: translateX(-2px);
+}
+
+.mobile-nav-btn.next:hover .nav-arrow {
+  transform: translateX(2px);
+}
+
+.mobile-nav-btn .nav-label {
+  line-height: 1;
+}
+
+.mobile-nav-btn:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
 }
 
 /* ===================================
@@ -2386,48 +2652,8 @@ html, body {
 }
 
 /* ===================================
-   ENHANCED MOBILE TYPOGRAPHY
+   ENHANCED MOBILE TYPOGRAPHY - Removed duplicate rules
    =================================== */
-@media (max-width: 768px) {
-  .artist-name {
-    font-size: 1.5rem;
-  }
-
-  .artwork-info h1 {
-    font-size: 2rem;
-  }
-
-  .minimal-header {
-    padding: 1rem 1rem;
-  }
-
-  .main-nav a {
-    font-size: 0.95rem;
-  }
-
-  /* Make filmstrip more prominent on mobile */
-  .filmstrip-container {
-    padding: 2rem 0;
-    background: var(--highlight-color);
-    border-top: 2px solid var(--accent-light);
-  }
-
-  .thumbnail-item-inner {
-    width: 100px;
-    height: 100px;
-    border-width: 3px;
-  }
-
-  .filmstrip-carousel {
-    grid-auto-columns: 100px;
-    gap: 20px;
-  }
-
-  .thumbnail-item.active .thumbnail-item-inner {
-    border-color: var(--accent-color);
-    box-shadow: 0 8px 24px rgba(212, 82, 110, 0.3);
-  }
-}
 
 /* ===================================
    ENHANCED VISUAL ACCENTS
@@ -2554,7 +2780,7 @@ html, body {
     background: linear-gradient(to top, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.95) 100%);
     backdrop-filter: blur(12px);
     border-top: 2px solid var(--accent-light);
-    padding: 1.25rem 1.5rem 1.5rem;
+    padding: 0.75rem 1rem 1rem;
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
     animation: slideUpMobile 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
@@ -2598,7 +2824,7 @@ html, body {
     justify-content: center;
     color: var(--accent-color);
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(212, 82, 110, 0.2);
+    box-shadow: 0 4px 12px rgba(212, 82, 110, 0.25);
     transition: all 0.2s ease;
     padding: 0;
   }
@@ -2614,18 +2840,18 @@ html, body {
 
   .mobile-artwork-title {
     font-family: var(--font-heading);
-    font-size: 1.4rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: var(--text-color);
-    margin: 0 0 0.5rem;
+    margin: 0 0 0.25rem;
     line-height: 1.2;
   }
 
   .mobile-artwork-meta {
-    font-size: 1rem;
+    font-size: 0.85rem;
     color: var(--secondary-text);
     margin: 0;
-    line-height: 1.6;
+    line-height: 1.4;
   }
 
   /* Adjust artwork wrapper to accommodate overlay */

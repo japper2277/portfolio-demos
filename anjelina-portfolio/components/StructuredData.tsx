@@ -34,7 +34,7 @@ export const ArtistSchema = () => (
       description: 'Contemporary artist working at the volatile intersection of chaos and control, constructing visceral narratives through layered abstraction.',
       url: 'https://anjelinavillalobos.com',
       sameAs: [
-        'https://instagram.com/anjelinavillalobos',
+        'https://www.instagram.com/anjelhelix/',
         'https://artsy.net/artist/anjelina-villalobos',
       ],
       alumniOf: [

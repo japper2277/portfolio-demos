@@ -30,7 +30,7 @@ export default function AboutPage() {
           <aside className="about-image-column">
             <div className="about-image-wrapper">
               <Image
-                src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=600&fm=webp"
+                src="/me2023.jpeg"
                 alt="A portrait of the artist, Anjelina Villalobos"
                 width={600}
                 height={800}
@@ -47,10 +47,7 @@ export default function AboutPage() {
             <div>
               <h1 className="about-page-title">Anjelina Villalobos</h1>
               <p className="about-page-text">
-                Originally from Miami, I now work as a painter and teacher based in New York City. My art explores the space between introspection and dreamscapes, using acrylics to create self-portraits that delve into personal narratives.
-              </p>
-              <p className="about-page-text">
-                Alongside these, I produce nonrepresentational works that use vivid color and soft imagery to capture fleeting moods and the textures of memory. My goal is to invite viewers into a contemplative space where emotion and color intertwine.
+                Anjelina Villalobos grew up in the city of Miami, Florida. She is currently a New York City based painter and teacher. She uses acrylic paint to create introspective self portraits as well as nonrepresentational works depicting dreamlike visuals. Her paintings utilize vivid colors to depict underlying moods and soft imagery. In 2024 Villalobos earned a BFA from Parsons School of Design in New York.
               </p>
             </div>
 
@@ -80,7 +77,7 @@ export default function AboutPage() {
                   </svg>
                   <span>View Résumé</span>
                 </a>
-                <a href="https://instagram.com/anjelinavillalobos" target="_blank" rel="noopener noreferrer" className="about-social-link">
+                <a href="https://www.instagram.com/anjelhelix/" target="_blank" rel="noopener noreferrer" className="about-social-link">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
@@ -88,7 +85,7 @@ export default function AboutPage() {
                   </svg>
                   <span>Instagram</span>
                 </a>
-                <a href="mailto:contact@anjelinavillalobos.com" className="about-social-link">
+                <a href="mailto:linahouston9@gmail.com" className="about-social-link">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                     <path d="M22 6l-10 7L2 6"></path>
@@ -114,49 +111,63 @@ export default function AboutPage() {
           <div
             className="resume-modal-content"
             onClick={(e) => e.stopPropagation()}
+            style={{
+              maxWidth: '900px',
+              width: '90vw',
+              maxHeight: '90vh',
+              padding: '0',
+              background: '#fff',
+              borderRadius: '12px',
+              overflow: 'hidden',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+            }}
           >
             <button
               onClick={closeModal}
               className="resume-modal-close"
+              style={{
+                position: 'absolute',
+                top: '16px',
+                right: '16px',
+                zIndex: 10,
+                background: 'rgba(0, 0, 0, 0.7)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '50%',
+                width: '40px',
+                height: '40px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(0, 0, 0, 0.9)';
+                e.currentTarget.style.transform = 'scale(1.1)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(0, 0, 0, 0.7)';
+                e.currentTarget.style.transform = 'scale(1)';
+              }}
               aria-label="Close modal"
             >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
             </button>
 
-            <h2 id="resume-title" className="resume-modal-title">Anjelina Villalobos</h2>
-            <p className="resume-modal-subtitle">Painter & Teacher</p>
-
-            <div className="resume-modal-body">
-              <div className="resume-section">
-                <h3 className="resume-section-heading">Contact</h3>
-                <p>New York, NY</p>
-                <p>hello@anjelinavillalobos.art</p>
-              </div>
-
-              <div className="resume-section">
-                <h3 className="resume-section-heading">Education</h3>
-                <p className="resume-item-title">Parsons School of Design, New York, NY</p>
-                <p>Bachelor of Fine Arts (BFA), 2024</p>
-              </div>
-
-              <div className="resume-section">
-                <h3 className="resume-section-heading">Experience</h3>
-                <p className="resume-item-title">Art Teacher, NYC Public Schools</p>
-                <p className="resume-item-date">2024 - Present</p>
-                <ul className="resume-list">
-                  <li>Developed and taught acrylic painting curriculum for high school students.</li>
-                  <li>Organized and curated the annual student art exhibition.</li>
-                </ul>
-              </div>
-
-              <div className="resume-section">
-                <h3 className="resume-section-heading">Skills</h3>
-                <p>Acrylic Painting, Portraiture, Nonrepresentational Art, Art Curation, Curriculum Development.</p>
-              </div>
-            </div>
+            <iframe
+              src="/2RESUME.pdf"
+              className="resume-pdf-viewer"
+              style={{
+                width: '100%',
+                height: '90vh',
+                border: 'none'
+              }}
+              title="Resume PDF"
+            />
           </div>
         </div>
       )}
