@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import Image from 'next/image';
 import { useSwipeable } from 'react-swipeable';
 import type { Artwork } from '@/lib/mockData';
 import Sidebar from '@/components/Sidebar';
@@ -15,7 +14,6 @@ interface HomePageClientProps {
 
 export default function HomePageClient({ artworks }: HomePageClientProps) {
   const [currentArtworkId, setCurrentArtworkId] = useState(artworks[0]?.id || 1);
-  const [fadeOut, setFadeOut] = useState(false);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const [isInfoVisible, setIsInfoVisible] = useState(true);
 

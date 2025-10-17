@@ -4,7 +4,6 @@
 'use client';
 
 import { useMemo, useRef, useState, useEffect } from 'react';
-import Image from 'next/image';
 import type { Artwork } from '@/lib/mockData';
 
 interface SidebarProps {
@@ -153,52 +152,6 @@ export default function Sidebar({
 
   // Get current artwork details
   const currentArtwork = artworks.find(a => a.id === currentArtworkId);
-
-  // Generate inquiry email link
-  const getInquiryEmailLink = (artwork: Artwork) => {
-    const subject = encodeURIComponent(`Inquiry about "${artwork.title}"`);
-    const body = encodeURIComponent(
-      `Hi,
-
-I'm interested in learning more about "${artwork.title}" (${artwork.year}).
-
-Details:
-• Medium: ${artwork.medium}
-• Dimensions: ${artwork.dimensions}
-
-Please let me know about pricing and availability.
-
-Thank you!`
-    );
-    return `mailto:contact@anjelinavillalobos.com?subject=${subject}&body=${body}`;
-  };
-
-  // Format price/availability for sidebar
-  const getPriceStatus = (artwork: Artwork) => {
-    if (artwork.availability === 'available') {
-      if (artwork.inquireForPrice) {
-        return 'Available - Inquire for Price';
-      } else if (artwork.price) {
-        const symbol = artwork.currency === 'USD' ? '$' : '€';
-        return `Available - ${symbol}${artwork.price.toLocaleString()}`;
-      }
-      return 'Available';
-    } else if (artwork.availability === 'sold') {
-      return 'Sold';
-    } else if (artwork.availability === 'on-loan') {
-      return 'On Loan';
-    } else if (artwork.availability === 'private-collection') {
-      return 'Private Collection';
-    }
-    return '';
-  };
-
-  const getStatusClass = (artwork: Artwork) => {
-    if (artwork.availability === 'available') {
-      return 'status-available';
-    }
-    return 'status-sold';
-  };
 
   // Navigation handlers
   const handlePrevious = () => {

@@ -4,15 +4,29 @@
 import { Suspense } from 'react';
 import { getArtworks, urlFor } from '@/lib/sanity';
 import HomePageClient from '@/components/HomePageClient';
+import type { SanityImageSource } from '@sanity/image-url/lib/types/types';
 
 export const revalidate = 60; // Revalidate every 60 seconds
+
+interface SanityArtwork {
+  title: string;
+  year: number;
+  medium: string;
+  dimensions: string;
+  mainImage: SanityImageSource;
+  thumbnail?: SanityImageSource;
+  price?: number;
+  currency?: string;
+  availability: string;
+  inquireForPrice: boolean;
+}
 
 export default async function HomePage() {
   // Fetch artworks from Sanity
   const sanityArtworks = await getArtworks();
 
   // Transform Sanity data to match the expected format
-  const artworks = sanityArtworks.map((artwork: any, index: number) => ({
+  const artworks = sanityArtworks.map((artwork: SanityArtwork, index: number) => ({
     id: index + 1,
     title: artwork.title,
     year: artwork.year,
