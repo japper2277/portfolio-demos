@@ -41,6 +41,7 @@ export default function HomePageClient({ artworks }: HomePageClientProps) {
   const transitionTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const navigationQueueRef = useRef<number[]>([]);
   const isProcessingQueueRef = useRef(false);
+  const infoPanelRef = useRef<HTMLDivElement>(null);
 
   const currentArtwork = artworks.find(a => a.id === currentArtworkId) || artworks[0];
   const currentIndex = artworks.findIndex(a => a.id === currentArtworkId);
@@ -169,6 +170,20 @@ export default function HomePageClient({ artworks }: HomePageClientProps) {
     return () => window.removeEventListener('resize', handleResize);
   }, [autoAdvance]);
 
+  // Auto-scroll to show expanded info panel on mobile
+  useEffect(() => {
+    if (isInfoVisible && infoPanelRef.current) {
+      // Small delay to allow CSS transition to start
+      setTimeout(() => {
+        infoPanelRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'end',
+          inline: 'nearest'
+        });
+      }, 100);
+    }
+  }, [isInfoVisible]);
+
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -289,7 +304,7 @@ export default function HomePageClient({ artworks }: HomePageClientProps) {
             </div>
 
             {/* Artwork Info Panel - Mobile Only (Collapsible, pushes image up) */}
-            <div className={`mobile-info-panel ${isInfoVisible ? 'expanded' : 'collapsed'}`}>
+            <div ref={infoPanelRef} className={`mobile-info-panel ${isInfoVisible ? 'expanded' : 'collapsed'}`}>
               <button
                 className="mobile-info-toggle"
                 onClick={() => setIsInfoVisible(!isInfoVisible)}
