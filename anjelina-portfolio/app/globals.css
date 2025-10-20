@@ -1820,16 +1820,19 @@ html, body {
 
   /* Artwork wrapper - optimize for mobile viewport */
   .artwork-wrapper {
-    height: 100dvh; /* Dynamic viewport height - adjusts for browser chrome */
+    flex: 1;
     min-height: 50vh;
     padding: 0; /* Remove padding for full-bleed artwork */
+    overflow: hidden;
   }
 
   /* Main content full width on mobile */
   .main-content {
     width: 100%;
     height: calc(100vh - 77px);
-    overflow: hidden;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
   }
 }
 
