@@ -26,7 +26,7 @@ export default defineType({
       title: 'Main Image',
       type: 'image',
       options: {
-        hotspot: true,
+        hotspot: false,
       },
       validation: (Rule) => Rule.required().error('Main image is required'),
     }),

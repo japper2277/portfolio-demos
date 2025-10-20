@@ -152,7 +152,7 @@ html, body {
   position: sticky;
   top: 77px;
   height: calc(100vh - 77px);
-  background-color: var(--content-bg);
+  background-color: #fff5f7;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -248,7 +248,7 @@ html, body {
   font-size: 0.875rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   margin: 0 0 12px 0;
   border-bottom: 2px solid var(--accent-light);
   padding-bottom: 10px;
@@ -426,11 +426,18 @@ html, body {
   flex: 1;
   box-sizing: border-box;
   background-color: var(--content-bg);
+  position: relative;
+  height: calc(100vh - 77px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .artwork-wrapper {
-  height: calc(100vh - 77px);
+  flex: 1;
   padding: 0;
+  position: relative;
+  overflow: hidden;
 }
 
 .artwork-display {
@@ -456,29 +463,30 @@ html, body {
   opacity: 0;
   transition: opacity 1.0s var(--ease-anticipatory);
   background-size: contain;
-  background-position: center;
+  background-position: center center;
   background-repeat: no-repeat;
   background-color: #fafafa;
+  box-sizing: border-box;
 }
 
 .bg-image.visible {
   opacity: 1;
 }
 
-/* Ken Burns effect - subtle zoom and pan */
+/* Ken Burns effect - subtle zoom and pan - DISABLED to prevent cropping */
 @keyframes kenburns {
   0% {
     transform: scale(1) translate(0, 0);
   }
   100% {
-    transform: scale(1.05) translate(-1%, 1%);
+    transform: scale(1) translate(0, 0);
   }
 }
 
-/* Ken Burns animation - desktop only */
+/* Ken Burns animation - desktop only - DISABLED to show full artwork */
 @media (min-width: 769px) {
   .bg-image.visible.animated {
-    animation: kenburns 45s infinite alternate ease-in-out;
+    /* animation: kenburns 45s infinite alternate ease-in-out; */
   }
 }
 
@@ -1206,19 +1214,19 @@ html, body {
 }
 
 .artwork-info h1 {
-  font-family: var(--font-heading);
-  font-size: 2.5rem;
+  font-family: var(--font-body);
+  font-size: 3rem;
   font-weight: 600;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   margin: 0 0 1rem;
-  line-height: 1.1;
+  line-height: 1.2;
 }
 
 .artwork-info p {
-  font-size: 1rem;
-  color: #666;
-  margin: 0;
-  line-height: 1.6;
+  font-size: 0.875rem;
+  color: rgba(26, 26, 26, 0.6);
+  margin: 0.5rem 0 0;
+  line-height: 1.7;
 }
 
 /* Pricing and Availability */
@@ -1369,8 +1377,8 @@ html, body {
 .thumbnail-item img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center; /* Ensure crops are centered */
+  object-fit: contain;
+  object-position: center;
 }
 
 .thumbnail-item:hover .thumbnail-item-inner {
@@ -1820,6 +1828,8 @@ html, body {
   /* Main content full width on mobile */
   .main-content {
     width: 100%;
+    height: calc(100vh - 77px);
+    overflow: hidden;
   }
 }
 
@@ -2162,10 +2172,13 @@ html, body {
    CONTACT SECTION: Light Theme Matching Site Design
    =================================== */
 .contact-section-light {
-  background: var(--content-bg);
-  padding: 2rem 1.5rem;
+  position: relative;
+  background: var(--bg-color);
+  padding: 0.75rem 1.5rem 0.75rem;
   text-align: center;
   border-top: 1px solid var(--border-color);
+  z-index: 5;
+  flex-shrink: 0;
 }
 
 .contact-content {
@@ -2839,19 +2852,20 @@ html, body {
   }
 
   .mobile-artwork-title {
-    font-family: var(--font-heading);
-    font-size: 1.1rem;
-    font-weight: 700;
+    font-family: var(--font-body);
+    font-size: 1.5rem;
+    font-weight: 600;
     color: var(--text-color);
-    margin: 0 0 0.25rem;
+    margin: 0 0 0.5rem;
     line-height: 1.2;
+    letter-spacing: -0.02em;
   }
 
   .mobile-artwork-meta {
-    font-size: 0.85rem;
-    color: var(--secondary-text);
+    font-size: 0.875rem;
+    color: rgba(26, 26, 26, 0.6);
     margin: 0;
-    line-height: 1.4;
+    line-height: 1.7;
   }
 
   /* Adjust artwork wrapper to accommodate overlay */

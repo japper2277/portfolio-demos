@@ -302,7 +302,7 @@ export default function HomePageClient({ artworks }: HomePageClientProps) {
             </div>
           </div>
 
-          {/* Social Links Section */}
+          {/* Social Links Section - Below artwork, not overlapping */}
           <section className="contact-section-light" aria-label="Social media links">
             <div className="contact-content">
               <div className="social-links-light">
@@ -324,7 +324,6 @@ export default function HomePageClient({ artworks }: HomePageClientProps) {
               </div>
             </div>
           </section>
-
         </main>
       </div>
     </>

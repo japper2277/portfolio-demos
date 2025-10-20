@@ -34,13 +34,13 @@ export default async function HomePage() {
     dimensions: artwork.dimensions,
     image: urlFor(artwork.mainImage)
       .width(1920)
-      .height(1280)
+      .fit('max')
       .format('webp')
       .quality(85)
       .url(),
     thumbnail: artwork.thumbnail
-      ? urlFor(artwork.thumbnail).width(100).height(100).format('webp').quality(80).url()
-      : urlFor(artwork.mainImage).width(100).height(100).format('webp').quality(80).url(),
+      ? urlFor(artwork.thumbnail).width(100).fit('max').format('webp').quality(80).url()
+      : urlFor(artwork.mainImage).width(100).fit('max').format('webp').quality(80).url(),
     price: artwork.price,
     currency: artwork.currency || 'USD',
     availability: artwork.availability,
