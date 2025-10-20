@@ -2787,52 +2787,39 @@ html, body {
 }
 
 @media (max-width: 768px) {
-  .artwork-info-overlay-mobile {
-    display: block;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(to top, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.95) 100%);
-    backdrop-filter: blur(12px);
-    border-top: 2px solid var(--accent-light);
-    padding: 0.75rem 1rem 1rem;
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
-    animation: slideUpMobile 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
-    z-index: 10;
+  /* Show mobile components */
+  .mobile-info-panel {
+    display: block !important;
   }
 
-  .artwork-info-overlay-mobile.hidden {
-    transform: translateY(100%);
-    opacity: 1;
-    padding: 0;
+  .mobile-social-footer {
+    display: flex !important;
   }
 
-  .artwork-info-overlay-mobile.hidden .mobile-artwork-title,
-  .artwork-info-overlay-mobile.hidden .mobile-artwork-meta {
-    display: none;
+  /* Mobile Info Panel - Collapsible (pushes image up, doesn't overlay) */
+  .mobile-info-panel {
+    background: white;
+    border-top: 2px solid var(--border-color);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
   }
 
-  @keyframes slideUpMobile {
-    from {
-      transform: translateY(100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
+  .mobile-info-panel.collapsed {
+    height: auto;
   }
 
-  .toggle-info-btn-mobile {
+  .mobile-info-panel.expanded {
+    height: auto;
+  }
+
+  .mobile-info-toggle {
     position: absolute;
     top: -20px;
     left: 50%;
     transform: translateX(-50%);
     background: white;
     border: 2px solid var(--accent-light);
-    border-radius: 20px;
+    border-radius: 50%;
     width: 40px;
     height: 40px;
     display: flex;
@@ -2841,46 +2828,197 @@ html, body {
     color: var(--accent-color);
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(212, 82, 110, 0.25);
-    transition: all 0.2s ease;
+    transition: transform 0.2s ease, background 0.2s ease;
     padding: 0;
+    z-index: 101; /* Above footer */
   }
 
-  .toggle-info-btn-mobile:hover {
+  /* When collapsed, position button just above the social footer */
+  .mobile-info-panel.collapsed .mobile-info-toggle {
+    position: fixed;
+    bottom: 60px; /* Height of social footer + spacing */
+    left: 50%;
+    top: auto;
+  }
+
+  .mobile-info-toggle:hover {
     background: var(--highlight-color);
     transform: translateX(-50%) scale(1.1);
   }
 
-  .toggle-info-btn-mobile:active {
+  .mobile-info-toggle:active {
     transform: translateX(-50%) scale(0.95);
   }
 
+  .mobile-info-content {
+    text-align: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+  }
+
+  /* Collapsed: Completely hidden */
+  .mobile-info-panel.collapsed .mobile-info-content {
+    max-height: 0;
+    padding: 0;
+    opacity: 0;
+  }
+
+  /* Expanded: Full content visible */
+  .mobile-info-panel.expanded .mobile-info-content {
+    max-height: 500px;
+    padding: 1.5rem 1.5rem 1rem;
+    opacity: 1;
+  }
+
   .mobile-artwork-title {
-    font-family: var(--font-body);
-    font-size: 1.5rem;
-    font-weight: 600;
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 700;
     color: var(--text-color);
     margin: 0 0 0.5rem;
     line-height: 1.2;
-    letter-spacing: -0.02em;
   }
 
   .mobile-artwork-meta {
     font-size: 0.875rem;
     color: rgba(26, 26, 26, 0.6);
     margin: 0;
-    line-height: 1.7;
+    line-height: 1.6;
   }
 
-  /* Adjust artwork wrapper to accommodate overlay */
+  /* Fixed Social Footer - Always visible at bottom (matches desktop icons) */
+  .mobile-social-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-color);
+    border-top: 1px solid var(--border-color);
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    z-index: 100;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .mobile-social-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--secondary-text);
+    transition: all 0.3s ease;
+  }
+
+  .mobile-social-icon:hover {
+    color: var(--text-color);
+    transform: translateY(-4px);
+  }
+
+  .mobile-social-icon svg {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
+  }
+
+  .mobile-social-icon:hover svg {
+    transform: scale(1.1);
+  }
+
+  .mobile-social-icon span {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-family: var(--font-body);
+  }
+
+  /* Adjust artwork wrapper - account for fixed footer */
   .artwork-wrapper {
-    height: calc(100vh - 77px);
-    padding-bottom: 0;
+    height: auto;
+    min-height: calc(100vh - 77px - 60px); /* header + footer */
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 60px; /* space for fixed footer */
   }
 
   .artwork-display {
-    height: 100%;
+    flex: 1;
+    min-height: 40vh;
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  /* Ensure background images display properly on mobile */
+  .background-image-container {
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .bg-image {
+    background-size: contain !important; /* Ensure no cropping */
+    min-height: 100%;
+  }
+
+  /* Filmstrip - Mobile Only */
+  .filmstrip-mobile-only {
+    display: block;
+    background: var(--highlight-color);
+    border-top: 2px solid var(--accent-light);
+  }
+
+  .filmstrip-container {
+    padding: 1rem 0 1.5rem;
+  }
+
+  /* Hide contact section on mobile */
+  .contact-desktop-only {
+    display: none;
+  }
+}
+
+/* Filmstrip - Hide on Desktop by default */
+.filmstrip-mobile-only {
+  display: none;
+}
+
+/* Mobile components - Hide on Desktop */
+.mobile-info-panel {
+  display: none;
+}
+
+.mobile-social-footer {
+  display: none;
+}
+
+/* Contact sections - Show mobile by default, hide desktop by default */
+.contact-mobile-only {
+  display: block;
+}
+
+.contact-desktop-only {
+  display: none;
+}
+
+@media (min-width: 769px) {
+  /* Show desktop contact, hide mobile contact */
+  .contact-desktop-only {
+    display: block;
+  }
+
+  .contact-mobile-only {
+    display: none;
+  }
+
+  /* Ensure mobile components stay hidden on desktop */
+  .mobile-info-panel {
+    display: none;
+  }
+
+  .mobile-social-footer {
+    display: none;
   }
 }

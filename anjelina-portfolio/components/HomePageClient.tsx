@@ -6,6 +6,7 @@ import type { Artwork } from '@/lib/mockData';
 import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
 import MobileNav from '@/components/MobileNav';
+import Filmstrip from '@/components/Filmstrip';
 import { GallerySchema, ArtworkSchema } from '@/components/StructuredData';
 
 interface HomePageClientProps {
@@ -287,25 +288,46 @@ export default function HomePageClient({ artworks }: HomePageClientProps) {
               </div>
             </div>
 
-            {/* Artwork Info Overlay - Mobile Only */}
-            <div className={`artwork-info-overlay-mobile ${!isInfoVisible ? 'hidden' : ''}`}>
+            {/* Artwork Info Panel - Mobile Only (Collapsible, pushes image up) */}
+            <div className={`mobile-info-panel ${isInfoVisible ? 'expanded' : 'collapsed'}`}>
               <button
-                className="toggle-info-btn-mobile"
+                className="mobile-info-toggle"
                 onClick={() => setIsInfoVisible(!isInfoVisible)}
-                aria-label={isInfoVisible ? 'Hide artwork info' : 'Show artwork info'}
+                aria-label={isInfoVisible ? 'Collapse artwork info' : 'Expand artwork info'}
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polyline points={isInfoVisible ? '18 15 12 9 6 15' : '6 9 12 15 18 9'}></polyline>
+                  <polyline points={isInfoVisible ? '6 9 12 15 18 9' : '18 15 12 9 6 15'}></polyline>
                 </svg>
               </button>
 
-              <h2 className="mobile-artwork-title">{currentArtwork.title}</h2>
-              <p className="mobile-artwork-meta">{currentArtwork.medium}, {currentArtwork.dimensions}</p>
+              <div className="mobile-info-content">
+                <h2 className="mobile-artwork-title">{currentArtwork.title}</h2>
+                <p className="mobile-artwork-meta">{currentArtwork.medium}, {currentArtwork.dimensions}</p>
+              </div>
             </div>
           </div>
 
-          {/* Social Links Section - Below artwork, not overlapping */}
-          <section className="contact-section-light" aria-label="Social media links">
+          {/* Fixed Social Footer - Mobile Only (Always visible at bottom) */}
+          <div className="mobile-social-footer">
+            <a href="https://www.instagram.com/anjelhelix/" target="_blank" rel="noopener noreferrer" className="mobile-social-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="1.5"/>
+                <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="1.5"/>
+                <circle cx="18" cy="6" r="1" fill="currentColor"/>
+              </svg>
+              <span>Instagram</span>
+            </a>
+            <a href="mailto:linahouston9@gmail.com" className="mobile-social-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M22 6l-10 7L2 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              <span>Email</span>
+            </a>
+          </div>
+
+          {/* Social Links Section - Desktop Only */}
+          <section className="contact-section-light contact-desktop-only" aria-label="Social media links">
             <div className="contact-content">
               <div className="social-links-light">
                 <a href="https://www.instagram.com/anjelhelix/" target="_blank" rel="noopener noreferrer" className="social-icon-light">
