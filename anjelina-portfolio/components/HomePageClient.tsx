@@ -280,9 +280,11 @@ export default function HomePageClient({ artworks }: HomePageClientProps) {
                 />
               </div>
 
-              {/* Preload next and previous images for instant transitions */}
-              <link rel="preload" as="image" href={nextArtwork.image} />
-              <link rel="preload" as="image" href={prevArtwork.image} />
+              {/* Preload next and previous images */}
+              <div style={{ display: 'none' }}>
+                <img src={nextArtwork.image} alt="" />
+                <img src={prevArtwork.image} alt="" />
+              </div>
             </div>
 
             {/* Artwork Info Overlay - Mobile Only */}
