@@ -12,13 +12,13 @@
   /* Enhanced color palette with stronger brand identity */
   --text-color: #1a1a1a;
   --secondary-text: #666;
-  --bg-color: #fef7f8;
-  --content-bg: #fff;
+  --bg-color: #f3dfe8;
+  --content-bg: #f3dfe8;
   --accent-color: #d4526e;
   --accent-dark: #b23e56;
   --accent-light: #f5cbd4;
   --border-color: #ede0e3;
-  --highlight-color: #fef0f3;
+  --highlight-color: #f3dfe8;
 
   /* Fonts */
   --font-heading: 'Playfair Display', serif;
@@ -60,7 +60,7 @@ html, body {
 .page-container {
   display: flex;
   align-items: flex-start;
-  background-color: #fff5f7;
+  background-color: #f3dfe8;
   height: calc(100vh - 77px);
   overflow: hidden;
 }
@@ -153,7 +153,7 @@ html, body {
   position: sticky;
   top: 0;
   height: 100%;
-  background-color: #fff5f7;
+  background-color: #f3dfe8;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -426,7 +426,7 @@ html, body {
 .main-content {
   flex: 1;
   box-sizing: border-box;
-  background-color: var(--content-bg);
+  background-color: #f3dfe8;
   position: relative;
   height: calc(100vh - 77px);
   overflow: hidden;
@@ -466,7 +466,7 @@ html, body {
   background-size: contain;
   background-position: center center;
   background-repeat: no-repeat;
-  background-color: #fafafa;
+  background-color: #f3dfe8;
   box-sizing: border-box;
   /* Ensure paintings display without cropping */
   padding: 20px;
@@ -499,7 +499,7 @@ html, body {
   height: 100%;
   object-fit: contain;
   cursor: pointer;
-  background: #fafafa;
+  background: #f3dfe8;
 }
 
 /* ===================================
@@ -509,7 +509,7 @@ html, body {
   padding: 6rem 2rem 4rem;
   max-width: 1200px;
   margin: 0 auto;
-  background: var(--content-bg);
+  background: #f3dfe8;
 }
 
 .about-hero {
