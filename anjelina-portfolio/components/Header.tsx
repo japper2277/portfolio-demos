@@ -32,7 +32,7 @@ export default function Header({ onMenuClick, showMenuButton = false }: HeaderPr
       </div>
       <nav className="main-nav">
         <Link href="/about">About</Link>
-        <a href="mailto:contact@anjelinavillalobos.com">Contact</a>
+        <a href="mailto:linahouston9@gmail.com">Contact</a>
       </nav>
     </header>
   );
