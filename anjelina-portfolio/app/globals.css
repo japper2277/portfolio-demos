@@ -468,6 +468,8 @@ html, body {
   background-repeat: no-repeat;
   background-color: #fafafa;
   box-sizing: border-box;
+  /* Ensure paintings display without cropping */
+  padding: 20px;
 }
 
 .bg-image.visible {
@@ -2947,11 +2949,10 @@ html, body {
   /* Adjust artwork wrapper - account for fixed footer */
   .artwork-wrapper {
     height: auto;
-    max-height: calc(100vh - 77px - 60px); /* header + footer */
     display: flex;
     flex-direction: column;
-    padding-bottom: 60px; /* space for fixed footer */
-    overflow: hidden;
+    padding: 20px 10px 80px 10px; /* Add padding to prevent cropping, extra bottom for footer */
+    overflow: visible;
   }
 
   .artwork-display {
@@ -2971,7 +2972,7 @@ html, body {
 
   .bg-image {
     background-size: contain !important; /* Ensure no cropping */
-    min-height: 100%;
+    padding: 10px; /* Add padding on mobile to prevent edge cropping */
   }
 
   /* Filmstrip - Mobile Only */
