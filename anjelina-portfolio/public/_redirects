@@ -1,0 +1,2 @@
+# Redirect www to non-www
+https://www.anjelinavillalobos.com/* https://anjelinavillalobos.com/:splat 301!
